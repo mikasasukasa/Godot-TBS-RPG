@@ -1,0 +1,485 @@
+[gd_scene load_steps=16 format=1]
+
+[ext_resource path="res://actors.tres" type="TileSet" id=1]
+[ext_resource path="res://CRLLLL.tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://mk_move.png" type="Texture" id=3]
+[ext_resource path="res://guy2.png" type="Texture" id=4]
+[ext_resource path="res://king.png" type="Texture" id=5]
+[ext_resource path="res://actor.prefab.tscn" type="PackedScene" id=6]
+[ext_resource path="res://cursor.png" type="Texture" id=7]
+[ext_resource path="res://guy.png" type="Texture" id=8]
+[ext_resource path="res://gkad.png" type="Texture" id=9]
+[ext_resource path="res://tress.tres" type="TileSet" id=10]
+[ext_resource path="res://terrain_bld.tileset.tres" type="TileSet" id=11]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Node
+
+func _ready():
+	pass"
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends TileMap
+
+
+
+func _ready():
+	# Called every time the node is added to the scene.
+	# Initialization here
+	pass
+"
+
+[sub_resource type="GDScript" id=3]
+
+script/source = "extends Sprite
+
+var tileW = 8
+var tileH = 4
+
+var goalPos
+
+signal has_moved
+signal has_clicked
+
+func _ready():
+	#get_tree().get_root().add_child(Sprite.new())
+	
+	goalPos = get_pos()
+	set_process_input(true)
+	#set_process(true)
+	pass
+
+func _input(ev):
+	if ev.is_action_pressed(\"ui_left\"):
+		translate(Vector2(-tileW, -tileH))
+		
+		#goalPos += Vector2(-tileW, -tileH)
+		emit_signal(\"has_moved\", self)
+		
+	elif ev.is_action_pressed(\"ui_right\"):
+		translate(Vector2(tileW, tileH))
+		#goalPos += Vector2(tileW, tileH)
+		emit_signal(\"has_moved\", self)
+		
+	elif ev.is_action_pressed(\"ui_down\"):
+		translate(Vector2(-tileW, tileH))
+		#goalPos += Vector2(-tileW, tileH)
+		emit_signal(\"has_moved\", self)
+		
+	elif ev.is_action_pressed(\"ui_up\"):
+		translate(Vector2(tileW, -tileH))
+		#goalPos += Vector2(tileW, -tileH)
+		emit_signal(\"has_moved\", self)
+	
+	elif ev.is_action_pressed(\"ui_accept\"):
+		emit_signal(\"has_clicked\", self)
+
+func _process(delta):
+	var motion = goalPos - get_pos() 
+	translate(motion / 5)
+
+func aaaa(pos):
+	var _x = (pos.x / tileW + pos.y / tileH) /2;
+	var _y = (pos.y / tileH - pos.x / tileW) /2;
+	return Vector2(floor(_x), floor(_y))
+
+func world_to_grid(pos):
+	var _x = (pos.x / tileW + pos.y / tileH) / 2;
+	var _y = (pos.y / tileH - pos.x / tileW) / 2;
+	return Vector2(floor(_x), floor(_y))"
+
+[sub_resource type="GDScript" id=4]
+
+script/source = "extends CanvasLayer
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	# Called every time the node is added to the scene.
+	# Initialization here
+	pass
+
+
+func _on_cursor_has_moved(sender):
+	
+	get_node(\"cursorPos\").set_text(str(\"cursorPos:\", sender.get_pos()))
+	get_node(\"cursorGridPos\").set_text(str(\"cursorGridPos:\", sender.aaaa(sender.get_pos())))
+	pass # replace with function body"
+
+[node name="scene" type="Node"]
+
+[node name="camera" type="Camera2D" parent="."]
+
+transform/pos = Vector2( -14, 54 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 0.25, 0.25 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+
+[node name="actors" type="TileMap" parent="."]
+
+visibility/visible = false
+mode = 1
+tile_set = ExtResource( 1 )
+cell/size = Vector2( 24, 12 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 131077, 0, 196610, 0, 327684, 0 )
+
+[node name="battleManager" type="Node" parent="."]
+
+script/script = SubResource( 1 )
+
+[node name="HUD" type="CanvasLayer" parent="battleManager"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="terrain" type="TileMap" parent="."]
+
+editor/display_folded = true
+mode = 1
+tile_set = ExtResource( 2 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = true
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( -65531, 7, -65530, 7, 3, 9, 4, 9, 5, 7, 6, 7, 7, 7, 8, 9, 9, 12, 10, 12, 11, 12, 65538, 9, 65539, 9, 65540, 8, 65541, 7, 65542, 7, 65543, 7, 65544, 9, 65545, 9, 65546, 12, 65547, 12, 131072, 9, 131073, 9, 131074, 9, 131075, 8, 131076, 7, 131077, 7, 131078, 7, 131079, 7, 131080, 8, 131081, 9, 131082, 11, 131083, 12, 196608, 12, 196609, 9, 196610, 8, 196611, 7, 196612, 7, 196613, 7, 196614, 7, 196615, 7, 196616, 7, 196617, 8, 196618, 9, 196619, 11, 262144, 12, 262145, 9, 262146, 7, 262147, 7, 262148, 7, 262149, 7, 262150, 7, 262151, 7, 262152, 7, 262153, 7, 262154, 8, 262155, 8, 393211, 5, 393212, 5, 393213, 5, 393214, 5, 327681, 9, 327682, 7, 327683, 5, 327684, 5, 327685, 0, 327686, 5, 327687, 5, 327688, 7, 327689, 7, 458747, 5, 458750, 5, 393217, 8, 393218, 7, 393219, 5, 393220, 0, 393221, 1, 393222, 0, 393223, 5, 393224, 7, 524283, 5, 524286, 6, 458754, 7, 458755, 3, 458756, 1, 458757, 4, 458758, 1, 458759, 6, 589819, 5, 589820, 5, 589821, 5, 589822, 5, 524291, 5, 524292, 0, 524293, 2, 524294, 0, 524295, 5, 589827, 5, 589828, 1, 589829, 2, 589830, 1, 589831, 5, 655362, 5, 655363, 1, 655364, 0, 655365, 2, 655366, 0, 655367, 1, 655368, 5, 720897, 5, 720898, 1, 720899, 0, 720900, 1, 720901, 2, 720902, 1, 720903, 0, 720904, 1, 720905, 5, 851965, 5, 786433, 3, 786434, 0, 786435, 1, 786436, 0, 786437, 2, 786438, 0, 786439, 1, 786440, 0, 786441, 6, 851969, 5, 851970, 1, 851971, 0, 851972, 1, 851973, 2, 851974, 1, 851975, 0, 851976, 1, 851977, 5, 917505, 3, 917506, 0, 917507, 1, 917508, 0, 917509, 2, 917510, 0, 917511, 1, 917512, 0, 917513, 6, 983041, 5, 983042, 1, 983043, 0, 983044, 1, 983045, 2, 983046, 1, 983047, 0, 983048, 1, 983049, 5, 1048578, 5, 1048579, 1, 1048580, 0, 1048581, 2, 1048582, 0, 1048583, 1, 1048584, 5, 1114115, 5, 1114116, 1, 1114117, 2, 1114118, 1, 1114119, 5, 1179651, 5, 1179652, 0, 1179653, 2, 1179654, 0, 1179655, 5 )
+script/script = SubResource( 2 )
+
+[node name="markers" type="YSort" parent="terrain"]
+
+sort/enabled = true
+
+[node name="marker0" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 40, 37 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker1" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 40, 29 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker2" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 24, 29 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker3" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 24, 37 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker12" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 47, 41 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker14" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 32, 41 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker15" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 16, 41 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker4" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 32, 41 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker5" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 89, 13 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker6" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 48, 33 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker7" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 48, 25 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker8" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 32, 25 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker9" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 16, 33 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker13" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( 17, 25 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker10" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 16, 33 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="marker11" type="Sprite" parent="terrain"]
+
+visibility/visible = false
+transform/pos = Vector2( 53, 7 )
+texture = ExtResource( 3 )
+centered = false
+offset = Vector2( 0, 3 )
+modulate = Color( 1, 1, 1, 0.784314 )
+
+[node name="Sprite" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( -3, 42 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 2
+
+[node name="Sprite1" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( -120, 35 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 2
+
+[node name="Sprite3" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( -72, 80 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 2
+
+[node name="Sprite4" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( -96, 91 )
+texture = ExtResource( 5 )
+offset = Vector2( 0, -3.5 )
+
+[node name="actor" parent="terrain" instance=ExtResource( 6 )]
+
+transform/pos = Vector2( -1, 39 )
+
+[node name="Sprite2" type="Sprite" parent="terrain"]
+
+transform/pos = Vector2( -48, 84 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 2
+
+[node name="cursor" type="Sprite" parent="."]
+
+transform/pos = Vector2( 32, 36 )
+texture = ExtResource( 7 )
+script/script = SubResource( 3 )
+
+[node name="YSort" type="YSort" parent="."]
+
+sort/enabled = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite2" type="Sprite" parent="YSort"]
+
+transform/pos = Vector2( 32, 44 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 1
+
+[node name="Sprite4" type="Sprite" parent="YSort"]
+
+visibility/visible = false
+transform/pos = Vector2( 72, 34 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 3
+
+[node name="Sprite5" type="Sprite" parent="YSort"]
+
+transform/pos = Vector2( -16, 51 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3.5 )
+
+[node name="Sprite6" type="Sprite" parent="YSort"]
+
+transform/pos = Vector2( -48, 66 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3.5 )
+
+[node name="Sprite3" type="Sprite" parent="YSort"]
+
+transform/pos = Vector2( 16, 36 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 1
+
+[node name="trees" type="TileMap" parent="YSort"]
+
+visibility/visible = false
+mode = 1
+tile_set = ExtResource( 10 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 3, 0, 4, 0, 5, 0, 6, 0, 65541, 0, 65542, 0, 131072, 0, 131078, 0, 196613, 0, 196614, 0, 262144, 0, 262145, 0, 262150, 0, 327680, 0, 327681, 0, 393216, 0, 393217, 0, 393218, 0, 393221, 0, 393222, 0 )
+
+[node name="buildings" type="TileMap" parent="."]
+
+visibility/visible = false
+mode = 1
+tile_set = ExtResource( 11 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = true
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 262147, 5, 262148, 5, 262149, 5, 262150, 5, 262151, 5, 327683, 5, 327684, 1, 327685, 1, 327686, 1, 327687, 5, 393219, 5, 393220, 0, 393221, 0, 393222, 0, 393223, 5, 458755, 5, 458756, 0, 458757, 0, 458758, 0, 458759, 5, 524291, 5, 524292, 0, 524293, 0, 524294, 0, 524295, 5, 589827, 5, 589828, 5, 589829, 5, 589830, 5, 589831, 5 )
+
+[node name="debug" type="CanvasLayer" parent="."]
+
+editor/display_folded = true
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+script/script = SubResource( 4 )
+
+[node name="cursorPos" type="Label" parent="debug"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 2.0
+margin/top = 3.0
+margin/right = 73.0
+margin/bottom = 17.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 2
+text = "cursor pos:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="cursorGridPos" type="Label" parent="debug"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 2.0
+margin/top = 21.0
+margin/right = 73.0
+margin/bottom = 35.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 2
+text = "cursor pos:"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[connection signal="has_moved" from="cursor" to="debug" method="_on_cursor_has_moved"]
+
+

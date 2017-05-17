@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://assets/scripts/dialogue.gd" type="Script" id=1]
+[ext_resource path="res://assets/scripts/dialogue_data.gd" type="Script" id=2]
+
+[node name="INTRO_01" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="dialogue0" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = "Marcus"
+speech = "AHwdo"
+
+[node name="dialogue1" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = ""
+speech = ""
+
+[node name="dialogue2" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = ""
+speech = ""
+
+[node name="dialogue3" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = ""
+speech = ""
+
+[node name="dialogue4" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = ""
+speech = ""
+
+[node name="dialogue5" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = ""
+speech = ""
+
+

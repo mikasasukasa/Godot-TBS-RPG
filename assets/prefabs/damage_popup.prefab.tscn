@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://04B_03__.fnt" type="BitmapFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Node2D
+
+var goalY
+var timer = 45
+var toDie = false
+
+func _ready():
+	goalY = get_global_pos() - Vector2(0, 12)
+	set_process(true)
+
+func _process(dt):
+	if !toDie:
+		var motion = goalY - get_global_pos()
+		translate(motion / 8)
+		
+		if motion.y < 1:
+			timer -= 1
+			
+			if timer <= 0:
+				toDie = true
+	else:
+		translate(-Vector2(0, 0.5))
+		var o = get_opacity()
+		set_opacity(o - 0.05)
+		
+		if o <= 0:
+			queue_free()"
+
+[node name="damagePopup" type="Node2D"]
+
+transform/pos = Vector2( 0, -14 )
+z/z = 5
+z/relative = false
+script/script = SubResource( 1 )
+
+[node name="value" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -19.0
+margin/top = -6.0
+margin/right = 21.0
+margin/bottom = 8.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.957031, 0.957031, 0.957031, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "45"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+

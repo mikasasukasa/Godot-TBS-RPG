@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://assets/scripts/battle_state_move.gd" type="Script" id=1]
+
+[node name="moveState" type="Node2D"]
+
+z/z = -1
+script/script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+

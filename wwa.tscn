@@ -1,0 +1,604 @@
+[gd_scene load_steps=16 format=1]
+
+[ext_resource path="res://assets/scripts/scene.gd" type="Script" id=1]
+[ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://assets/tilesets/collider.tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://pixelated.fnt" type="BitmapFont" id=4]
+[ext_resource path="res://castle.tileset.tres" type="TileSet" id=5]
+[ext_resource path="res://assets/sprites/scene/grasslands/tree.png" type="Texture" id=6]
+[ext_resource path="res://assets/scripts/actor.gd" type="Script" id=7]
+[ext_resource path="res://guy2.png" type="Texture" id=8]
+[ext_resource path="res://guy.png" type="Texture" id=9]
+[ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=10]
+[ext_resource path="res://assets/prefabs/battle_manager.prefab.tscn" type="PackedScene" id=11]
+[ext_resource path="res://TinyUnicode.fnt" type="BitmapFont" id=12]
+[ext_resource path="res://assets/sprites/actors/portraits/prince.png" type="Texture" id=13]
+[ext_resource path="res://assets/fonts/haversham.fnt" type="BitmapFont" id=14]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends TileMap
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	set_process_input(true)
+
+func _input(ev):
+	if ev.is_action_pressed(\"ui_focus_next\"):
+		set_hidden(!is_hidden())"
+
+[node name="scene" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="camera" type="Camera2D" parent="."]
+
+transform/pos = Vector2( 24, 51 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 0.25, 0.25 )
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+drag_margin/h_enabled = true
+drag_margin/v_enabled = true
+smoothing/enable = false
+smoothing/speed = 5.0
+drag_margin/left = 0.2
+drag_margin/top = 0.2
+drag_margin/right = 0.2
+drag_margin/bottom = 0.2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="terrain" type="TileMap" parent="."]
+
+editor/display_folded = true
+z/z = -2
+mode = 1
+tile_set = ExtResource( 2 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 65542, 0, 65543, 0, 65544, 0, 65545, 0, 65546, 0, 131077, 0, 131078, 0, 131079, 0, 131080, 0, 131081, 0, 131082, 0, 131083, 0, 196609, 0, 196610, 0, 196611, 0, 196612, 0, 196613, 0, 196614, 0, 196615, 0, 196616, 0, 196617, 0, 196618, 0, 196619, 0, 196620, 0, 196621, 0, 196622, 0, 196623, 0, 196624, 0, 262145, 0, 262146, 0, 262147, 0, 262148, 0, 262149, 0, 262150, 0, 262151, 0, 262152, 0, 262153, 0, 262154, 0, 262155, 0, 262156, 0, 262157, 0, 262158, 0, 262159, 0, 262160, 0, 327681, 0, 327682, 0, 327683, 0, 327684, 0, 327685, 0, 327686, 0, 327687, 0, 327688, 0, 327689, 0, 327690, 0, 327691, 0, 327692, 0, 327693, 0, 327694, 0, 327695, 0, 327696, 0, 393217, 0, 393218, 0, 393219, 0, 393220, 0, 393221, 0, 393222, 0, 393223, 0, 393224, 0, 393225, 0, 393226, 0, 393227, 0, 393228, 0, 393229, 0, 393230, 0, 393231, 0, 393232, 0, 458753, 0, 458754, 0, 458755, 0, 458756, 0, 458757, 0, 458758, 0, 458759, 0, 458760, 0, 458761, 0, 458762, 0, 458763, 0, 458764, 0, 458765, 0, 458766, 0, 458767, 0, 458768, 0, 524293, 0, 524294, 0, 524295, 0, 524296, 0, 524297, 0, 524298, 0, 524299, 0, 589830, 0, 589831, 0, 589832, 0, 589833, 0, 589834, 0, 655367, 0, 655368, 0, 655369, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="collider" type="TileMap" parent="terrain"]
+
+visibility/visible = false
+z/z = 5
+mode = 1
+tile_set = ExtResource( 3 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 65542, 0, 65543, 0, 65544, 0, 65545, 0, 65546, 0, 131077, 0, 131083, 0, 196608, 0, 196609, 0, 196610, 0, 196611, 0, 196612, 0, 196620, 0, 196621, 0, 196622, 0, 196623, 0, 196624, 0, 196625, 0, 262144, 0, 262161, 0, 327680, 0, 327697, 0, 393216, 0, 393233, 0, 458752, 0, 458753, 0, 458754, 0, 458755, 0, 458756, 0, 458764, 0, 458765, 0, 458766, 0, 458767, 0, 458768, 0, 458769, 0, 524293, 0, 524299, 0, 589830, 0, 589831, 0, 589833, 0, 589834, 0, 655367, 0, 655369, 0, 720903, 0, 720904, 0, 720905, 0 )
+script/script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="terrain"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 44.0
+margin/bottom = 14.0
+custom_fonts/font = ExtResource( 4 )
+text = "ASDUh"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="floor" type="TileMap" parent="."]
+
+z/z = -1
+mode = 1
+tile_set = ExtResource( 5 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 65542, 0, 65543, 3, 65544, 0, 65545, 3, 65546, 0, 131077, 0, 131078, 3, 131079, 0, 131080, 3, 131081, 0, 131082, 3, 131083, 0, 196609, 3, 196610, 0, 196611, 3, 196612, 0, 196613, 3, 196614, 0, 196615, 3, 196616, 0, 196617, 3, 196618, 0, 196619, 3, 196620, 0, 196621, 3, 196622, 0, 196623, 3, 196624, 0, 262145, 0, 262146, 3, 262147, 0, 262148, 3, 262149, 0, 262150, 3, 262151, 0, 262152, 3, 262153, 0, 262154, 3, 262155, 0, 262156, 3, 262157, 0, 262158, 3, 262159, 0, 262160, 3, 327681, 4, 327682, 4, 327683, 4, 327684, 4, 327685, 4, 327686, 4, 327687, 4, 327688, 4, 327689, 4, 327690, 4, 327691, 4, 327692, 4, 327693, 4, 327694, 4, 327695, 4, 327696, 4, 393217, 0, 393218, 3, 393219, 0, 393220, 3, 393221, 0, 393222, 3, 393223, 0, 393224, 3, 393225, 0, 393226, 3, 393227, 0, 393228, 3, 393229, 0, 393230, 3, 393231, 0, 393232, 3, 458753, 3, 458754, 0, 458755, 3, 458756, 0, 458757, 3, 458758, 0, 458759, 3, 458760, 0, 458761, 3, 458762, 0, 458763, 3, 458764, 0, 458765, 3, 458766, 0, 458767, 3, 458768, 0, 524293, 0, 524294, 3, 524295, 0, 524296, 3, 524297, 0, 524298, 3, 524299, 0, 589830, 0, 589832, 0, 589833, 3, 589834, 0, 655368, 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="objects" type="TileMap" parent="."]
+
+editor/display_folded = true
+mode = 1
+tile_set = ExtResource( 5 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
+cell/y_sort = true
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 65542, 6, 65543, 10, 65544, 6, 65545, 10, 65546, 6, 131077, 6, 131083, 6, 196609, 6, 196610, 10, 196611, 6, 196612, 6, 196620, 6, 196621, 6, 196622, 10, 196623, 6, 196624, 6, 458753, 6, 458754, 9, 458755, 6, 458756, 6, 458764, 6, 458765, 6, 458766, 9, 458767, 6, 458768, 6, 524293, 6, 524299, 6, 589830, 6, 589831, 6, 589833, 6, 589834, 6, 655367, 8, 655369, 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="tree0" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( -32, 24 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="tree1" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( -47, 44 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="tree2" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( 8, 20 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="tree3" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( 40, 28 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="tree4" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( 48, 43 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="tree5" type="Sprite" parent="objects"]
+
+visibility/visible = false
+transform/pos = Vector2( 8, 55 )
+texture = ExtResource( 6 )
+offset = Vector2( 1, -6 )
+script/script = ExtResource( 7 )
+name = "Unnamed"
+group = 0
+move = 3
+attackRange = 1
+attackPower = 1
+maxHP = 50
+HP = 50
+
+[node name="actor0" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( -17, 77 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -4 )
+hframes = 4
+frame = 2
+script/script = ExtResource( 7 )
+name = "Dark Knight"
+group = 1
+move = 3
+attackRange = 1
+attackPower = 21
+maxHP = 76
+HP = 76
+
+[node name="actor1" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( 81, 84 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -4 )
+hframes = 4
+frame = 3
+script/script = ExtResource( 7 )
+name = "Dark Knight"
+group = 1
+move = 3
+attackRange = 1
+attackPower = 21
+maxHP = 76
+HP = 76
+
+[node name="actor2" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( 16, 59 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3 )
+hframes = 4
+frame = 1
+script/script = ExtResource( 7 )
+name = "MonkA"
+group = 0
+move = 4
+attackRange = 1
+attackPower = 24
+maxHP = 65
+HP = 65
+
+[node name="actor3" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( 32, 60 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3 )
+hframes = 4
+script/script = ExtResource( 7 )
+name = "MonkB"
+group = 0
+move = 4
+attackRange = 1
+attackPower = 24
+maxHP = 65
+HP = 65
+
+[node name="actor7" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( 16, 52 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3 )
+hframes = 4
+frame = 3
+script/script = ExtResource( 7 )
+name = "MonkC"
+group = 0
+move = 4
+attackRange = 1
+attackPower = 24
+maxHP = 65
+HP = 65
+
+[node name="actor8" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( 31, 51 )
+texture = ExtResource( 9 )
+offset = Vector2( 0, -3 )
+hframes = 4
+frame = 2
+script/script = ExtResource( 7 )
+name = "MonkD"
+group = 0
+move = 4
+attackRange = 1
+attackPower = 24
+maxHP = 65
+HP = 65
+
+[node name="actor5" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( -15, 29 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -3 )
+hframes = 4
+script/script = ExtResource( 7 )
+name = "Ninja"
+group = 1
+move = 6
+attackRange = 5
+attackPower = 14
+maxHP = 45
+HP = 45
+
+[node name="actor6" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( -29, 36 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -3 )
+hframes = 4
+script/script = ExtResource( 7 )
+name = "Ninja"
+group = 1
+move = 6
+attackRange = 5
+attackPower = 14
+maxHP = 45
+HP = 45
+
+[node name="boss" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+transform/pos = Vector2( -15, 36 )
+texture = ExtResource( 10 )
+offset = Vector2( 0, -4 )
+hframes = 4
+script/script = ExtResource( 7 )
+name = "Vladimir"
+group = 1
+move = 5
+attackRange = 2
+attackPower = 34
+maxHP = 108
+HP = 108
+
+[node name="battle" parent="." instance=ExtResource( 11 )]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+editor/display_folded = true
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="Control3x" type="Control" parent="CanvasLayer"]
+
+anchor/right = 1
+anchor/bottom = 1
+rect/scale = Vector2( 2, 2 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 533.0
+margin/bottom = 300.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control3x"]
+
+editor/display_folded = true
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -48.0
+margin/top = 155.0
+margin/right = 250.0
+margin/bottom = 197.0
+
+[node name="Label1" type="Label" parent="CanvasLayer/Control3x/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 40.0
+margin/top = 6.0
+margin/right = 294.0
+margin/bottom = 38.0
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Vladimir
+You're foolish if you think that will work. Unfortunately, you leave me no choice, Adrien!"
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="TextureFrame" type="TextureFrame" parent="CanvasLayer/Control3x/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 13.0
+margin/right = 46.0
+margin/bottom = 53.0
+texture = ExtResource( 13 )
+stretch_mode = 0
+
+[node name="Panel3" type="Panel" parent="CanvasLayer/Control3x"]
+
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -77.0
+margin/top = -3.0
+margin/right = -129.0
+margin/bottom = -71.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control3x/Panel3"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 8.0
+margin/top = 4.0
+margin/right = 45.0
+margin/bottom = 71.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/line_spacing = -1
+text = "Move
+Act
+Wait
+Equip"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Panel 2" type="Panel" parent="CanvasLayer/Control3x"]
+
+visibility/visible = false
+anchor/left = 1
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 43.0
+margin/top = 40.0
+margin/right = -24.0
+margin/bottom = -34.0
+
+[node name="Control4x" type="Control" parent="CanvasLayer"]
+
+visibility/visible = false
+rect/scale = Vector2( 4, 4 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 206.0
+margin/top = -201.0
+margin/right = 246.0
+margin/bottom = -161.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control4x"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 221.0
+margin/top = 147.0
+margin/right = 261.0
+margin/bottom = 199.0
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Move
+Act
+Wait
+Status"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control4x"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -42.0
+margin/top = 166.0
+margin/right = 194.0
+margin/bottom = 197.0
+
+[node name="Label1" type="Label" parent="CanvasLayer/Control4x/Panel"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 35.0
+margin/top = 4.0
+margin/right = 231.0
+margin/bottom = 30.0
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/line_spacing = 0
+text = "Vladimir
+You're foolish if you think that will work. Unfortunately, you leave me no choice, Adrien!"
+autowrap = true
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+
