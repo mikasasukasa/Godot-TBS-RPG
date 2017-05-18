@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://assets/scripts/dialogue_box.gd" type="Script" id=1]
 [ext_resource path="res://pixelated.fnt" type="BitmapFont" id=2]
+[ext_resource path="res://assets/sprites/actors/portraits/prince2.png" type="Texture" id=3]
 
 [node name="dialogueBox" type="CanvasLayer"]
 
@@ -67,7 +68,7 @@ size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = 4.0
 margin/top = 10.0
-margin/right = 218.0
+margin/right = 219.0
 margin/bottom = 32.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
@@ -78,5 +79,33 @@ clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="TextureFrame" type="TextureFrame" parent="EBBB/box"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 2.0
+margin/right = 29.0
+margin/bottom = 30.0
+texture = ExtResource( 3 )
+modulate = Color( 0, 0, 0, 1 )
+stretch_mode = 0
+
+[node name="TextureFrame1" type="TextureFrame" parent="EBBB/box/TextureFrame"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -1.0
+margin/top = -1.0
+margin/right = 27.0
+margin/bottom = 27.0
+texture = ExtResource( 3 )
+stretch_mode = 0
 
 

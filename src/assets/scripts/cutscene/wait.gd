@@ -10,6 +10,7 @@ func start(_manager):
 
 func end():
 	print(get_name(), " has ended!")
+	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()
 	queue_free()
@@ -19,3 +20,9 @@ func _process(dt):
 		end()
 	else:
 		frames -= 1
+
+func skip():
+	end()
+
+func should_wait_end():
+	return false

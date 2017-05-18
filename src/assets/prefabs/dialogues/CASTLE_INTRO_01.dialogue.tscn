@@ -37,4 +37,10 @@ script/script = ExtResource( 2 )
 speaker = "MonkB"
 speech = "Me too!"
 
+[node name="dialogue5" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+speaker = "Vladimir"
+speech = "You are surrounded, there's no way you four will leave this castle alive!"
+
 

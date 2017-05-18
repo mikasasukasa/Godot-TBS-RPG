@@ -22,6 +22,7 @@ func start(_manager):
 
 func end():
 	print(get_name(), " has ended!")
+	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()
 
@@ -33,3 +34,11 @@ func _process(dt):
 		end()
 	else:
 		_actor.set_opacity(o + 0.1)
+
+func skip():
+	_actor.set_opacity(1.0)
+	queue_free()
+	end()
+
+func should_wait_end():
+	return waitEnd

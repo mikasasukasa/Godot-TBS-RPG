@@ -3,7 +3,7 @@ extends Node
 onready var scene = get_parent()
 
 var hovered = null
-var active = true
+var active = false
 var turn = 0
 var mstar
 
@@ -26,6 +26,7 @@ func _ready():
 	
 	fix_position(get_cursor())
 	
+	get_cursor().activate(false)
 #	var t = scene.get_terrain_collider().get_used_rect()
 #	#var m = max(t.x, t.y)
 #	mstar = preload("res://assets/scripts/mstar.gd").new(50, 50)
@@ -81,6 +82,8 @@ func map_to_world_fixed(position):
 
 func _on_cursor_has_moved(sender):
 	if active:
+		print("UUUU")
+		
 		var cursorPosM = scene.get_terrain().world_to_map(sender.get_pos())
 		
 		for actor in scene.get_actors():
@@ -95,6 +98,8 @@ func _on_cursor_has_moved(sender):
 		
 		hovered = null
 		emit_signal("has_found_an_actor", hovered)
+	else:
+		print("AAAA")
 
 func _on_cursor_has_clicked(sender):
 	if active && hovered:
@@ -114,3 +119,9 @@ func _on_cursor_has_clicked(sender):
 func activate(enable):
 	print("BattleManager state changed to ", enable, ".")
 	active = enable
+
+func _on_letTheBattle_intro_has_ended():
+	activate(true)
+	get_cursor().set_hidden(false)
+	get_cursor().activate(true)
+	pass # replace with function body

@@ -19,12 +19,22 @@ func start(_manager):
 	else:
 		end()
 
+func skip():
+	actorNode.set_pos(manager.scene.map_to_world_fixed(position))
+	actorNode.path.resize(0)
+	end()
+
 func end():
 	print(get_name(), " has ended!")
+	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()
-	queue_free()
 
 func _process(dt):
 	if !actorNode.should_move():
-		end()
+		if shouldWaitArrival:
+			end()
+		queue_free()
+
+func should_wait_end():
+	return shouldWaitArrival

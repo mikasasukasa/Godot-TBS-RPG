@@ -9,6 +9,13 @@ func start(_manager):
 
 func end():
 	print(get_name(), " has ended!")
+	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()
 	queue_free()
+
+func skip():
+	end()
+
+func should_wait_end():
+	return true

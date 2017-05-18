@@ -42,8 +42,6 @@ func step():
 		get_node("EBBB/box/speaker").set_text(speaker.front())
 		
 		var _spch = get_node("EBBB/box/speech")
-		
-		
 		_spch.set_text(speech.front())
 		
 
@@ -52,3 +50,6 @@ func end():
 	
 	if manager:
 		manager.end()
+
+func skip():
+	end()

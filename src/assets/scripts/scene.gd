@@ -52,4 +52,5 @@ func map_to_world_fixed(position):
 
 func _input(event):
 	if event.is_action_pressed("ui_down"):
-		get_node("CASTLE_INTRO").start()
+		#get_node("CASTLE_INTRO").start()
+		pass

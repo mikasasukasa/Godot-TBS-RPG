@@ -4,9 +4,9 @@
 [ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://castle.tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://assets/tilesets/collider.tileset.tres" type="TileSet" id=4]
-[ext_resource path="res://guy2.png" type="Texture" id=5]
-[ext_resource path="res://assets/scripts/actor.gd" type="Script" id=6]
-[ext_resource path="res://guy.png" type="Texture" id=7]
+[ext_resource path="res://assets/sprites/actors/monk.png" type="Texture" id=5]
+[ext_resource path="res://assets/scripts/actor_2.gd" type="Script" id=6]
+[ext_resource path="res://assets/sprites/actors/ninja.png" type="Texture" id=7]
 [ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=8]
 [ext_resource path="res://assets/scripts/cutscene/cutscene.gd" type="Script" id=9]
 [ext_resource path="res://assets/scripts/cutscene/wait.gd" type="Script" id=10]
@@ -60,6 +60,7 @@ __meta__ = {
 
 [node name="terrain" type="TileMap" parent="."]
 
+editor/display_folded = true
 z/z = -2
 z/relative = false
 mode = 1
@@ -147,62 +148,25 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="ninjaD" type="Sprite" parent="objects" groups=[
-"actors",
-]]
-
-visibility/opacity = 0.0
-transform/pos = Vector2( -17, 77 )
-texture = ExtResource( 5 )
-offset = Vector2( 0, -4 )
-hframes = 4
-frame = 2
-script/script = ExtResource( 6 )
-name = "Dark Knight"
-group = 1
-move = 3
-attackRange = 1
-attackPower = 21
-maxHP = 76
-HP = 76
-
-[node name="ninjaC" type="Sprite" parent="objects" groups=[
-"actors",
-]]
-
-visibility/opacity = 0.0
-transform/pos = Vector2( 113.835, 58.2533 )
-texture = ExtResource( 5 )
-offset = Vector2( 0, -4 )
-hframes = 4
-frame = 3
-script/script = ExtResource( 6 )
-name = "Dark Knight"
-group = 1
-move = 3
-attackRange = 1
-attackPower = 21
-maxHP = 76
-HP = 76
-
 [node name="monkA" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
 visibility/opacity = 0.0
 transform/pos = Vector2( 81.353, 93.2576 )
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
+vframes = 4
 hframes = 4
-frame = 3
+frame = 12
 script/script = ExtResource( 6 )
-name = "MonkA"
+name = "Monk"
 group = 0
 move = 4
 attackRange = 1
 attackPower = 24
-maxHP = 65
-HP = 65
+maxHP = 68
+HP = 68
 
 [node name="monkB" type="Sprite" parent="objects" groups=[
 "actors",
@@ -210,18 +174,19 @@ HP = 65
 
 visibility/opacity = 0.0
 transform/pos = Vector2( 88.6568, 87.9331 )
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
+vframes = 4
 hframes = 4
-frame = 3
+frame = 12
 script/script = ExtResource( 6 )
-name = "MonkB"
+name = "Monk"
 group = 0
 move = 4
 attackRange = 1
 attackPower = 24
-maxHP = 65
-HP = 65
+maxHP = 68
+HP = 68
 
 [node name="monkC" type="Sprite" parent="objects" groups=[
 "actors",
@@ -229,18 +194,19 @@ HP = 65
 
 visibility/opacity = 0.0
 transform/pos = Vector2( 88.4492, 87.6818 )
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
+vframes = 4
 hframes = 4
-frame = 3
+frame = 12
 script/script = ExtResource( 6 )
-name = "MonkC"
+name = "Monk"
 group = 0
 move = 4
 attackRange = 1
 attackPower = 24
-maxHP = 65
-HP = 65
+maxHP = 68
+HP = 68
 
 [node name="monkD" type="Sprite" parent="objects" groups=[
 "actors",
@@ -248,18 +214,38 @@ HP = 65
 
 visibility/opacity = 0.0
 transform/pos = Vector2( 96.353, 83.413 )
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
+vframes = 4
 hframes = 4
-frame = 3
+frame = 12
 script/script = ExtResource( 6 )
-name = "MonkD"
+name = "Monk"
 group = 0
 move = 4
 attackRange = 1
 attackPower = 24
-maxHP = 65
-HP = 65
+maxHP = 68
+HP = 68
+
+[node name="ninjaA" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+visibility/opacity = 0.0
+transform/pos = Vector2( -39.6448, 29.9209 )
+texture = ExtResource( 7 )
+offset = Vector2( 0, -3 )
+vframes = 4
+hframes = 4
+script/script = ExtResource( 6 )
+name = "Ninja"
+group = 1
+move = 5
+attackRange = 1
+attackPower = 19
+maxHP = 45
+HP = 45
 
 [node name="ninjaB" type="Sprite" parent="objects" groups=[
 "actors",
@@ -267,33 +253,56 @@ HP = 65
 
 visibility/opacity = 0.0
 transform/pos = Vector2( -25.0136, 23.7098 )
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 offset = Vector2( 0, -3 )
+vframes = 4
 hframes = 4
 script/script = ExtResource( 6 )
 name = "Ninja"
 group = 1
-move = 6
+move = 5
 attackRange = 1
-attackPower = 14
+attackPower = 19
 maxHP = 45
 HP = 45
 
-[node name="ninjaA" type="Sprite" parent="objects" groups=[
+[node name="ninjaC" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
 visibility/opacity = 0.0
-transform/pos = Vector2( -39.6448, 30.8676 )
-texture = ExtResource( 5 )
-offset = Vector2( 0, -3 )
+transform/pos = Vector2( 113.835, 58.2533 )
+texture = ExtResource( 7 )
+offset = Vector2( 0, -4 )
+vframes = 4
 hframes = 4
+frame = 12
 script/script = ExtResource( 6 )
 name = "Ninja"
 group = 1
-move = 6
+move = 5
 attackRange = 1
-attackPower = 14
+attackPower = 19
+maxHP = 45
+HP = 45
+
+[node name="ninjaD" type="Sprite" parent="objects" groups=[
+"actors",
+]]
+
+visibility/opacity = 0.0
+transform/pos = Vector2( -17, 77 )
+texture = ExtResource( 7 )
+offset = Vector2( 0, -4 )
+vframes = 4
+hframes = 4
+frame = 8
+script/script = ExtResource( 6 )
+name = "Ninja"
+group = 1
+move = 5
+attackRange = 1
+attackPower = 19
 maxHP = 45
 HP = 45
 
@@ -305,18 +314,20 @@ visibility/opacity = 0.0
 transform/pos = Vector2( -32.6754, 27.005 )
 texture = ExtResource( 8 )
 offset = Vector2( 0, -4 )
+vframes = 4
 hframes = 4
 script/script = ExtResource( 6 )
 name = "Vladimir"
 group = 1
 move = 5
-attackRange = 2
-attackPower = 34
-maxHP = 108
-HP = 108
+attackRange = 1
+attackPower = 24
+maxHP = 100
+HP = 100
 
 [node name="CASTLE_INTRO" type="Node" parent="."]
 
+editor/display_folded = true
 script/script = ExtResource( 9 )
 
 [node name="wait 15f" type="Node" parent="CASTLE_INTRO"]
@@ -401,7 +412,7 @@ waitEnd = true
 
 script/script = ExtResource( 12 )
 actor = NodePath("../../objects/vladimir")
-position = Vector2( 2, 5 )
+position = Vector2( 3, 5 )
 shouldWaitArrival = true
 
 [node name="wait 45f" type="Node" parent="CASTLE_INTRO"]
@@ -430,6 +441,20 @@ waitEnd = true
 script/script = ExtResource( 11 )
 actor = NodePath("../../objects/ninjaB")
 waitEnd = true
+
+[node name="move NinjaA to (2, 6)" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/ninjaA")
+position = Vector2( 2, 6 )
+shouldWaitArrival = false
+
+[node name="move NinjaB to (2, 4)" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/ninjaB")
+position = Vector2( 2, 4 )
+shouldWaitArrival = true
 
 [node name="teleport NinjaC to (16, 5)" type="Node" parent="CASTLE_INTRO"]
 
