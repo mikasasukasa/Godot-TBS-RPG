@@ -1,19 +1,20 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=17 format=1]
 
 [ext_resource path="res://assets/scripts/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://assets/tilesets/collider.tileset.tres" type="TileSet" id=3]
-[ext_resource path="res://pixelated.fnt" type="BitmapFont" id=4]
-[ext_resource path="res://castle.tileset.tres" type="TileSet" id=5]
-[ext_resource path="res://assets/sprites/scene/grasslands/tree.png" type="Texture" id=6]
-[ext_resource path="res://assets/scripts/actor.gd" type="Script" id=7]
-[ext_resource path="res://guy2.png" type="Texture" id=8]
-[ext_resource path="res://guy.png" type="Texture" id=9]
-[ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=10]
-[ext_resource path="res://assets/prefabs/battle_manager.prefab.tscn" type="PackedScene" id=11]
-[ext_resource path="res://TinyUnicode.fnt" type="BitmapFont" id=12]
-[ext_resource path="res://assets/sprites/actors/portraits/prince.png" type="Texture" id=13]
-[ext_resource path="res://assets/fonts/haversham.fnt" type="BitmapFont" id=14]
+[ext_resource path="res://castle.tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://assets/tilesets/collider.tileset.tres" type="TileSet" id=4]
+[ext_resource path="res://guy2.png" type="Texture" id=5]
+[ext_resource path="res://assets/scripts/actor.gd" type="Script" id=6]
+[ext_resource path="res://guy.png" type="Texture" id=7]
+[ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=8]
+[ext_resource path="res://assets/scripts/cutscene/cutscene.gd" type="Script" id=9]
+[ext_resource path="res://assets/scripts/cutscene/wait.gd" type="Script" id=10]
+[ext_resource path="res://assets/scripts/cutscene/unhide_actor.gd" type="Script" id=11]
+[ext_resource path="res://assets/scripts/cutscene/move_actor.gd" type="Script" id=12]
+[ext_resource path="res://assets/scripts/cutscene/start_dialogue.gd" type="Script" id=13]
+[ext_resource path="res://assets/scripts/cutscene/teleport_actor.gd" type="Script" id=14]
+[ext_resource path="res://assets/scripts/cutscene/start_battle.gd" type="Script" id=15]
 
 [sub_resource type="GDScript" id=1]
 
@@ -59,8 +60,8 @@ __meta__ = {
 
 [node name="terrain" type="TileMap" parent="."]
 
-editor/display_folded = true
 z/z = -2
+z/relative = false
 mode = 1
 tile_set = ExtResource( 2 )
 cell/size = Vector2( 16, 8 )
@@ -80,49 +81,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="collider" type="TileMap" parent="terrain"]
-
-visibility/visible = false
-z/z = 5
-mode = 1
-tile_set = ExtResource( 3 )
-cell/size = Vector2( 16, 8 )
-cell/quadrant_size = 16
-cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
-cell/half_offset = 2
-cell/tile_origin = 0
-cell/y_sort = false
-collision/use_kinematic = false
-collision/friction = 1.0
-collision/bounce = 0.0
-collision/layers = 1
-collision/mask = 1
-occluder/light_mask = 1
-tile_data = IntArray( 65542, 0, 65543, 0, 65544, 0, 65545, 0, 65546, 0, 131077, 0, 131083, 0, 196608, 0, 196609, 0, 196610, 0, 196611, 0, 196612, 0, 196620, 0, 196621, 0, 196622, 0, 196623, 0, 196624, 0, 196625, 0, 262144, 0, 262161, 0, 327680, 0, 327697, 0, 393216, 0, 393233, 0, 458752, 0, 458753, 0, 458754, 0, 458755, 0, 458756, 0, 458764, 0, 458765, 0, 458766, 0, 458767, 0, 458768, 0, 458769, 0, 524293, 0, 524299, 0, 589830, 0, 589831, 0, 589833, 0, 589834, 0, 655367, 0, 655369, 0, 720903, 0, 720904, 0, 720905, 0 )
-script/script = SubResource( 1 )
-
-[node name="Label" type="Label" parent="terrain"]
-
-visibility/visible = false
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 44.0
-margin/bottom = 14.0
-custom_fonts/font = ExtResource( 4 )
-text = "ASDUh"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="floor" type="TileMap" parent="."]
+[node name="floor" type="TileMap" parent="terrain"]
 
 z/z = -1
+z/relative = false
 mode = 1
-tile_set = ExtResource( 5 )
+tile_set = ExtResource( 3 )
 cell/size = Vector2( 16, 8 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
@@ -140,11 +104,32 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="collider" type="TileMap" parent="terrain"]
+
+visibility/visible = false
+z/z = 5
+z/relative = false
+mode = 1
+tile_set = ExtResource( 4 )
+cell/size = Vector2( 16, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray( 65542, 0, 65543, 0, 65544, 0, 65545, 0, 65546, 0, 131077, 0, 131083, 0, 196608, 0, 196609, 0, 196610, 0, 196611, 0, 196612, 0, 196620, 0, 196621, 0, 196622, 0, 196623, 0, 196624, 0, 196625, 0, 262144, 0, 262161, 0, 327680, 0, 327697, 0, 393216, 0, 393233, 0, 458752, 0, 458753, 0, 458754, 0, 458755, 0, 458756, 0, 458764, 0, 458765, 0, 458766, 0, 458767, 0, 458768, 0, 458769, 0, 524293, 0, 524299, 0, 589830, 0, 589831, 0, 589833, 0, 589834, 0, 655367, 0, 655369, 0, 720903, 0, 720904, 0, 720905, 0 )
+script/script = SubResource( 1 )
+
 [node name="objects" type="TileMap" parent="."]
 
-editor/display_folded = true
 mode = 1
-tile_set = ExtResource( 5 )
+tile_set = ExtResource( 3 )
 cell/size = Vector2( 16, 8 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
@@ -162,106 +147,17 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="tree0" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( -32, 24 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="tree1" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( -47, 44 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="tree2" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( 8, 20 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="tree3" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( 40, 28 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="tree4" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( 48, 43 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="tree5" type="Sprite" parent="objects"]
-
-visibility/visible = false
-transform/pos = Vector2( 8, 55 )
-texture = ExtResource( 6 )
-offset = Vector2( 1, -6 )
-script/script = ExtResource( 7 )
-name = "Unnamed"
-group = 0
-move = 3
-attackRange = 1
-attackPower = 1
-maxHP = 50
-HP = 50
-
-[node name="actor0" type="Sprite" parent="objects" groups=[
+[node name="ninjaD" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
+visibility/opacity = 0.0
 transform/pos = Vector2( -17, 77 )
-texture = ExtResource( 8 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -4 )
 hframes = 4
 frame = 2
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "Dark Knight"
 group = 1
 move = 3
@@ -270,16 +166,17 @@ attackPower = 21
 maxHP = 76
 HP = 76
 
-[node name="actor1" type="Sprite" parent="objects" groups=[
+[node name="ninjaC" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( 81, 84 )
-texture = ExtResource( 8 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 113.835, 58.2533 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -4 )
 hframes = 4
 frame = 3
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "Dark Knight"
 group = 1
 move = 3
@@ -288,16 +185,17 @@ attackPower = 21
 maxHP = 76
 HP = 76
 
-[node name="actor2" type="Sprite" parent="objects" groups=[
+[node name="monkA" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( 16, 59 )
-texture = ExtResource( 9 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 81.353, 93.2576 )
+texture = ExtResource( 7 )
 offset = Vector2( 0, -3 )
 hframes = 4
-frame = 1
-script/script = ExtResource( 7 )
+frame = 3
+script/script = ExtResource( 6 )
 name = "MonkA"
 group = 0
 move = 4
@@ -306,15 +204,17 @@ attackPower = 24
 maxHP = 65
 HP = 65
 
-[node name="actor3" type="Sprite" parent="objects" groups=[
+[node name="monkB" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( 32, 60 )
-texture = ExtResource( 9 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 88.6568, 87.9331 )
+texture = ExtResource( 7 )
 offset = Vector2( 0, -3 )
 hframes = 4
-script/script = ExtResource( 7 )
+frame = 3
+script/script = ExtResource( 6 )
 name = "MonkB"
 group = 0
 move = 4
@@ -323,16 +223,17 @@ attackPower = 24
 maxHP = 65
 HP = 65
 
-[node name="actor7" type="Sprite" parent="objects" groups=[
+[node name="monkC" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( 16, 52 )
-texture = ExtResource( 9 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 88.4492, 87.6818 )
+texture = ExtResource( 7 )
 offset = Vector2( 0, -3 )
 hframes = 4
 frame = 3
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "MonkC"
 group = 0
 move = 4
@@ -341,16 +242,17 @@ attackPower = 24
 maxHP = 65
 HP = 65
 
-[node name="actor8" type="Sprite" parent="objects" groups=[
+[node name="monkD" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( 31, 51 )
-texture = ExtResource( 9 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 96.353, 83.413 )
+texture = ExtResource( 7 )
 offset = Vector2( 0, -3 )
 hframes = 4
-frame = 2
-script/script = ExtResource( 7 )
+frame = 3
+script/script = ExtResource( 6 )
 name = "MonkD"
 group = 0
 move = 4
@@ -359,49 +261,52 @@ attackPower = 24
 maxHP = 65
 HP = 65
 
-[node name="actor5" type="Sprite" parent="objects" groups=[
+[node name="ninjaB" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( -15, 29 )
-texture = ExtResource( 8 )
+visibility/opacity = 0.0
+transform/pos = Vector2( -25.0136, 23.7098 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
 hframes = 4
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "Ninja"
 group = 1
 move = 6
-attackRange = 5
+attackRange = 1
 attackPower = 14
 maxHP = 45
 HP = 45
 
-[node name="actor6" type="Sprite" parent="objects" groups=[
+[node name="ninjaA" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( -29, 36 )
-texture = ExtResource( 8 )
+visibility/opacity = 0.0
+transform/pos = Vector2( -39.6448, 30.8676 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
 hframes = 4
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "Ninja"
 group = 1
 move = 6
-attackRange = 5
+attackRange = 1
 attackPower = 14
 maxHP = 45
 HP = 45
 
-[node name="boss" type="Sprite" parent="objects" groups=[
+[node name="vladimir" type="Sprite" parent="objects" groups=[
 "actors",
 ]]
 
-transform/pos = Vector2( -15, 36 )
-texture = ExtResource( 10 )
+visibility/opacity = 0.0
+transform/pos = Vector2( -32.6754, 27.005 )
+texture = ExtResource( 8 )
 offset = Vector2( 0, -4 )
 hframes = 4
-script/script = ExtResource( 7 )
+script/script = ExtResource( 6 )
 name = "Vladimir"
 group = 1
 move = 5
@@ -410,195 +315,142 @@ attackPower = 34
 maxHP = 108
 HP = 108
 
-[node name="battle" parent="." instance=ExtResource( 11 )]
+[node name="CASTLE_INTRO" type="Node" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script/script = ExtResource( 9 )
 
-editor/display_folded = true
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
+[node name="wait 15f" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Control3x" type="Control" parent="CanvasLayer"]
+script/script = ExtResource( 10 )
+frames = 15
 
-anchor/right = 1
-anchor/bottom = 1
-rect/scale = Vector2( 2, 2 )
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 533.0
-margin/bottom = 300.0
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="unhide MonkC" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Control3x"]
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/monkC")
+waitEnd = true
 
-editor/display_folded = true
-visibility/visible = false
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -48.0
-margin/top = 155.0
-margin/right = 250.0
-margin/bottom = 197.0
+[node name="move MonkC to (7, 5)" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Label1" type="Label" parent="CanvasLayer/Control3x/Panel"]
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/monkC")
+position = Vector2( 7, 5 )
+shouldWaitArrival = false
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 40.0
-margin/top = 6.0
-margin/right = 294.0
-margin/bottom = 38.0
-custom_fonts/font = ExtResource( 12 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Vladimir
-You're foolish if you think that will work. Unfortunately, you leave me no choice, Adrien!"
-autowrap = true
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[node name="wait 15f (2)" type="Node" parent="CASTLE_INTRO"]
 
-[node name="TextureFrame" type="TextureFrame" parent="CanvasLayer/Control3x/Panel"]
+script/script = ExtResource( 10 )
+frames = 15
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 6.0
-margin/top = 13.0
-margin/right = 46.0
-margin/bottom = 53.0
-texture = ExtResource( 13 )
-stretch_mode = 0
+[node name="unhide MonkD" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Panel3" type="Panel" parent="CanvasLayer/Control3x"]
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/monkD")
+waitEnd = true
 
-anchor/left = 1
-anchor/top = 1
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -77.0
-margin/top = -3.0
-margin/right = -129.0
-margin/bottom = -71.0
+[node name="unhide MonkA" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Label" type="Label" parent="CanvasLayer/Control3x/Panel3"]
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/monkA")
+waitEnd = true
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 8.0
-margin/top = 4.0
-margin/right = 45.0
-margin/bottom = 71.0
-custom_fonts/font = ExtResource( 14 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/line_spacing = -1
-text = "Move
-Act
-Wait
-Equip"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[node name="moveMonkD" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Panel 2" type="Panel" parent="CanvasLayer/Control3x"]
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/monkD")
+position = Vector2( 8, 4 )
+shouldWaitArrival = false
 
-visibility/visible = false
-anchor/left = 1
-anchor/top = 1
-anchor/right = 1
-anchor/bottom = 1
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 43.0
-margin/top = 40.0
-margin/right = -24.0
-margin/bottom = -34.0
+[node name="moveMonkA" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Control4x" type="Control" parent="CanvasLayer"]
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/monkA")
+position = Vector2( 8, 6 )
+shouldWaitArrival = false
 
-visibility/visible = false
-rect/scale = Vector2( 4, 4 )
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 206.0
-margin/top = -201.0
-margin/right = 246.0
-margin/bottom = -161.0
+[node name="wait 25f" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Label" type="Label" parent="CanvasLayer/Control4x"]
+script/script = ExtResource( 10 )
+frames = 25
 
-visibility/visible = false
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 221.0
-margin/top = 147.0
-margin/right = 261.0
-margin/bottom = 199.0
-custom_fonts/font = ExtResource( 12 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Move
-Act
-Wait
-Status"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[node name="unhide MonkB" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Control4x"]
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/monkB")
+waitEnd = true
 
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -42.0
-margin/top = 166.0
-margin/right = 194.0
-margin/bottom = 197.0
+[node name="moveMonkB" type="Node" parent="CASTLE_INTRO"]
 
-[node name="Label1" type="Label" parent="CanvasLayer/Control4x/Panel"]
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/monkB")
+position = Vector2( 9, 5 )
+shouldWaitArrival = true
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 35.0
-margin/top = 4.0
-margin/right = 231.0
-margin/bottom = 30.0
-custom_fonts/font = ExtResource( 12 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/line_spacing = 0
-text = "Vladimir
-You're foolish if you think that will work. Unfortunately, you leave me no choice, Adrien!"
-autowrap = true
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[node name="wait 100f" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 10 )
+frames = 25
+
+[node name="unhide Vladimir" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/vladimir")
+waitEnd = true
+
+[node name="move Vladimir to (2, 5)" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 12 )
+actor = NodePath("../../objects/vladimir")
+position = Vector2( 2, 5 )
+shouldWaitArrival = true
+
+[node name="wait 45f" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 10 )
+frames = 45
+
+[node name="start dialogue CASTLE_INTRO_01" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 13 )
+dialogue = "CASTLE_INTRO_01"
+
+[node name="wait 15f (3)" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 10 )
+frames = 45
+
+[node name="unhide NinjaA" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/ninjaA")
+waitEnd = true
+
+[node name="unhide NinjaB" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/ninjaB")
+waitEnd = true
+
+[node name="teleport NinjaC to (16, 5)" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 14 )
+actor = NodePath("../../objects/ninjaC")
+position = Vector2( 16, 5 )
+
+[node name="unhide NinjaC" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/ninjaC")
+waitEnd = true
+
+[node name="unhide NinjaD" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 11 )
+actor = NodePath("../../objects/ninjaD")
+waitEnd = true
+
+[node name="start battle" type="Node" parent="CASTLE_INTRO"]
+
+script/script = ExtResource( 15 )
 
 

@@ -3,44 +3,38 @@
 [ext_resource path="res://assets/scripts/dialogue.gd" type="Script" id=1]
 [ext_resource path="res://assets/scripts/dialogue_data.gd" type="Script" id=2]
 
-[node name="INTRO_01" type="Node"]
+[node name="CASTLE_INTRO_01" type="Node"]
 
 script/script = ExtResource( 1 )
 
 [node name="dialogue0" type="Node" parent="."]
 
 script/script = ExtResource( 2 )
-speaker = "Marcus"
-speech = "AHwdo"
+speaker = "Vladimir"
+speech = "I can not believe you monks made it to the castle. You peasants leave me no choice!"
 
 [node name="dialogue1" type="Node" parent="."]
 
 script/script = ExtResource( 2 )
-speaker = ""
-speech = ""
+speaker = "MonkC"
+speech = "Get out of our way!"
 
 [node name="dialogue2" type="Node" parent="."]
 
 script/script = ExtResource( 2 )
-speaker = ""
-speech = ""
+speaker = "MonkA"
+speech = "Yeah!"
 
 [node name="dialogue3" type="Node" parent="."]
 
 script/script = ExtResource( 2 )
-speaker = ""
-speech = ""
+speaker = "MonkD"
+speech = "I agree!"
 
 [node name="dialogue4" type="Node" parent="."]
 
 script/script = ExtResource( 2 )
-speaker = ""
-speech = ""
-
-[node name="dialogue5" type="Node" parent="."]
-
-script/script = ExtResource( 2 )
-speaker = ""
-speech = ""
+speaker = "MonkB"
+speech = "Me too!"
 
 

@@ -50,3 +50,6 @@ func map_to_world_fixed(position):
 	var terrain = get_terrain()
 	return terrain.map_to_world(position) + Vector2(0, terrain.get_cell_size().y * 0.5)
 
+func _input(event):
+	if event.is_action_pressed("ui_down"):
+		get_node("CASTLE_INTRO").start()

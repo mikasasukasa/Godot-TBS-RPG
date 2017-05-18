@@ -46,19 +46,22 @@ func _process(delta):
 		var motion = path[0] - get_pos()
 		
 		if motion.length_squared() < 0.5 * 0.5:
+			set_pos(path[0])
+				
 			if path.size() > 1:
 				look_at(path[1])
-				translate(motion.normalized() * 0.5)
+				#translate(motion.normalized() * 0.5)
 			
 			path.pop_front()
 			
 			if isAI && path.size() == 0:
-				isWaitingForNextStepAI = true
-				nextStepTimerAI = 15
-				#ai_make_decision(myManagerAI)
+				ai_wait_and_step(15)
 		else:
 			translate(motion.normalized() * 0.5)
 
+func ai_wait_and_step(time):
+	nextStepTimerAI = time
+	isWaitingForNextStepAI = true
 
 func ai_make_decision(_manager):
 	isAI = true
@@ -402,7 +405,9 @@ func get_angle_side(degrees):
 	
 	return 0
 
-
-
 func get_correct_angle(angle):
 	return rad2deg(angle) + 180.0
+
+#func fix_position(position):
+#	var terrain = get_terrain()
+#	return terrain.map_to_world(position) + Vector2(0, terrain.get_cell_size().y * 0.5)

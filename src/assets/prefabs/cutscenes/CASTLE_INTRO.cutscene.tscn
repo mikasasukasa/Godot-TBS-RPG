@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://assets/scripts/cutscene/cutscene.gd" type="Script" id=1]
+[ext_resource path="res://assets/scripts/cutscene/wait.gd" type="Script" id=2]
+
+[node name="CASTLE_INTRO" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="wait100" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+frames = 100
+
+
