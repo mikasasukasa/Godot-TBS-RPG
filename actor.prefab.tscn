@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://guy.png" type="Texture" id=1]
+
+[node name="actor" type="Sprite"]
+
+transform/pos = Vector2( 0, 4 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -3.5 )
+hframes = 4
+frame = 1
+
+

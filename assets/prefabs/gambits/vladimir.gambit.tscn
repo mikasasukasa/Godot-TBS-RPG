@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=1]
+
+[ext_resource path="res://assets/scripts/gambits/gambit.gd" type="Script" id=1]
+[ext_resource path="res://assets/scripts/gambits/gb_cause_hp_lower_than.gd" type="Script" id=2]
+[ext_resource path="res://assets/scripts/gambits/gb_effect_move_to_safest_place.gd" type="Script" id=3]
+[ext_resource path="res://assets/scripts/gambits/gb_cause_enemy_hp_lower_than.gd" type="Script" id=4]
+[ext_resource path="res://assets/scripts/gambits/gb_effect_chase_enemy.gd" type="Script" id=5]
+
+[node name="gambit VLADIMIR" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="CAUSE -> health is lower than 30%" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+percentage = 30
+
+[node name="EFFECT -> move to safest spot possible" type="Node" parent="CAUSE -> health is lower than 30%"]
+
+script/script = ExtResource( 3 )
+
+[node name="CAUSE -> enemy's health is lower than 20%" type="Node" parent="."]
+
+script/script = ExtResource( 4 )
+
+[node name="EFFECT -> chase causer" type="Node" parent="CAUSE -> enemy's health is lower than 20%"]
+
+script/script = ExtResource( 5 )
+target = null
+
+[node name="EFFECT -> chase nearest enemy" type="Node" parent="."]
+
+script/script = ExtResource( 5 )
+target = null
+
+

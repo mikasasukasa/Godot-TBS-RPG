@@ -1,0 +1,14 @@
+[gd_resource type="CanvasItemShader" format=1]
+
+[resource]
+
+_code = {
+"fragment": "vec3 lum = vec3(0.299, 0.587, 0.114) * 0.7;
+COLOR = vec4( vec3(dot( COLOR.rgb, lum)), COLOR.a);",
+"fragment_ofs": 0,
+"light": "",
+"light_ofs": 0,
+"vertex": "",
+"vertex_ofs": 0
+}
+
