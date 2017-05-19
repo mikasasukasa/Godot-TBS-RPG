@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/scripts/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://castle.tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://assets/tilesets/castle.tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://assets/tilesets/collider.tileset.tres" type="TileSet" id=4]
 [ext_resource path="res://assets/sprites/actors/monk.png" type="Texture" id=5]
 [ext_resource path="res://assets/scripts/actor_2.gd" type="Script" id=6]
@@ -60,7 +60,6 @@ __meta__ = {
 
 [node name="terrain" type="TileMap" parent="."]
 
-editor/display_folded = true
 z/z = -2
 z/relative = false
 mode = 1
@@ -129,7 +128,6 @@ script/script = SubResource( 1 )
 
 [node name="objects" type="TileMap" parent="."]
 
-editor/display_folded = true
 mode = 1
 tile_set = ExtResource( 3 )
 cell/size = Vector2( 16, 8 )

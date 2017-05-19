@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=1]
 
-[ext_resource path="res://mk_move.png" type="Texture" id=1]
+[ext_resource path="res://assets/sprites/battle/marker_move.png" type="Texture" id=1]
 
 [node name="marker0" type="Sprite"]
 
