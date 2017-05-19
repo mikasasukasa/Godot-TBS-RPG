@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://assets/scripts/battle_manager.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/battle/cursor.png" type="Texture" id=2]
-[ext_resource path="res://pixelated.fnt" type="BitmapFont" id=3]
-[ext_resource path="res://04B_03__.fnt" type="BitmapFont" id=4]
-[ext_resource path="res://HelvetiPixel.fnt" type="BitmapFont" id=5]
+[ext_resource path="res://assets/fonts/pixelated.fnt" type="BitmapFont" id=3]
+[ext_resource path="res://assets/fonts/04b_03.fnt" type="BitmapFont" id=4]
 
 [sub_resource type="GDScript" id=1]
 
@@ -198,7 +197,6 @@ scale = Vector2( 1, 1 )
 
 [node name="BEBE" type="Control" parent="userInterface"]
 
-editor/display_folded = true
 anchor/top = 1
 anchor/bottom = 1
 rect/scale = Vector2( 4, 4 )
@@ -213,15 +211,14 @@ margin/bottom = 405.0
 
 [node name="actorInfo" type="Panel" parent="userInterface/BEBE"]
 
-visibility/visible = false
 hint/tooltip = "hahah ah"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 3.0
+margin/left = 2.0
 margin/top = 114.0
-margin/right = 51.0
+margin/right = 50.0
 margin/bottom = 133.0
 script/script = SubResource( 2 )
 
@@ -278,6 +275,7 @@ max_lines_visible = -1
 
 [node name="BBEE" type="Control" parent="userInterface"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/scale = Vector2( 4, 4 )
@@ -362,7 +360,6 @@ max_lines_visible = -1
 
 [node name="BBBB" type="Control" parent="userInterface"]
 
-editor/display_folded = true
 rect/scale = Vector2( 4, 4 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -373,26 +370,55 @@ margin/top = 0.0
 margin/right = 240.0
 margin/bottom = 135.0
 
-[node name="turn" type="Label" parent="userInterface/BBBB"]
+[node name="turnPanel" type="Panel" parent="userInterface/BBBB"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 2.0
+margin/top = 2.0
+margin/right = 46.0
+margin/bottom = 14.0
+
+[node name="turn" type="Label" parent="userInterface/BBBB/turnPanel"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 2.0
-margin/top = 2.0
-margin/right = 42.0
-margin/bottom = 16.0
+margin/left = 3.0
+margin/top = 1.0
+margin/right = 31.0
+margin/bottom = 10.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Turn:"
+text = "Player"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="turnPost" type="Label" parent="userInterface/BBBB/turnPanel/turn"]
+
+anchor/left = 1
+anchor/right = 1
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 4.0
+margin/top = 0.0
+margin/right = -15.0
+margin/bottom = 9.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "turn"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="EEEE" type="Control" parent="userInterface"]
 
-editor/display_folded = true
 visibility/visible = false
 rect/scale = Vector2( 4, 4 )
 focus/ignore_mouse = false
@@ -406,6 +432,8 @@ margin/bottom = 135.0
 
 [node name="actions" type="Panel" parent="userInterface/EEEE"]
 
+editor/display_folded = true
+visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -425,7 +453,7 @@ margin/left = 4.0
 margin/top = 3.0
 margin/right = 48.0
 margin/bottom = 17.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Move"
 percent_visible = 1.0
@@ -442,7 +470,7 @@ margin/left = 4.0
 margin/top = 15.0
 margin/right = 48.0
 margin/bottom = 29.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Act"
 percent_visible = 1.0
@@ -459,7 +487,7 @@ margin/left = 4.0
 margin/top = 27.0
 margin/right = 48.0
 margin/bottom = 41.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Wait"
 percent_visible = 1.0
@@ -476,7 +504,7 @@ margin/left = 4.0
 margin/top = 39.0
 margin/right = 48.0
 margin/bottom = 53.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Status"
 percent_visible = 1.0
@@ -485,6 +513,7 @@ max_lines_visible = -1
 
 [node name="Label" type="Label" parent="userInterface/EEEE"]
 
+visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -493,7 +522,7 @@ margin/left = 260.0
 margin/top = -124.0
 margin/right = 409.0
 margin/bottom = -92.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Blah Blah Blah Blah Blah! Bleh Bleh Bleh Bleh Bleh! Blih Blih Blih Blih Blih! Bloh Bloh Bloh Bloh Bloh! Bluh Bluh Bluh Bluh Bluh!"
 autowrap = true
@@ -504,7 +533,6 @@ max_lines_visible = -1
 
 [node name="EBEB" type="Control" parent="userInterface"]
 
-editor/display_folded = true
 visibility/visible = false
 anchor/left = 1
 anchor/right = 1
@@ -528,7 +556,7 @@ margin/left = 115.0
 margin/top = 2.0
 margin/right = 318.0
 margin/bottom = 16.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Press W to show/hide scene colliders."
 percent_visible = 1.0

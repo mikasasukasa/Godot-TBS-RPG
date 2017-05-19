@@ -32,7 +32,13 @@ func _ready():
 #	mstar = preload("res://assets/scripts/mstar.gd").new(50, 50)
 #	mstar.block_based_on_tilemap(scene.get_terrain_collider())
 	
-	get_node("userInterface/BBBB/turn").set_text(str(turn))
+	get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
+	
+	if turn == 0:
+		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
+	else:
+		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
+	
 	set_process_input(true)
 
 func set_turn(_turn):
@@ -41,13 +47,23 @@ func set_turn(_turn):
 		actor.state = 0
 	
 	turn = _turn
-	get_node("userInterface/BBBB/turn").set_text(str("Turn: ", turn))
+	get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
+	
+	if turn == 0:
+		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
+	else:
+		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
+	
 	print("Turn has changed to ", turn)
 	#emit_signal("turn_has_changed", turn)
 	
 	get_cursor().activate(turn == 0)
-	
-	
+
+func get_turn_name(_turn):
+	if _turn == 0:
+		return "Player"
+	else:
+		return "Enemy"
 
 func _input(ev):
 	#print("SD")
@@ -56,7 +72,13 @@ func _input(ev):
 		if turn == 0:
 			set_turn(1)
 			activate(false)
-			get_node("userInterface/BBBB/turn").set_text(str("Turn: ", turn))
+			get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
+			
+			if turn == 0:
+				get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
+			else:
+				get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
+			
 			print("Turn has changed to ", turn)
 			
 			enemyAI.start()

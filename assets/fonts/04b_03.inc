@@ -4,7 +4,7 @@ static const int _builtin_font_charcount=96;
 static const int _builtin_font_charrects[96][8]={
 /* charidx , ofs_x, ofs_y, size_x, size_y, valign, halign, advance */
 {32,0,0,0,0,5,0,4},
-{160,0,-1,0,0,5,0,4},
+{160,1082130432,0,0,0,5,0,4},
 {96,51,81,2,2,0,0,3},
 {112,10,52,4,6,1,0,5},
 {80,18,46,4,5,0,0,5},
