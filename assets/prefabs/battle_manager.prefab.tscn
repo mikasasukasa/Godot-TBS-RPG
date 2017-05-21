@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://assets/scripts/battle_manager.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/battle/cursor.png" type="Texture" id=2]
-[ext_resource path="res://assets/fonts/pixelated.fnt" type="BitmapFont" id=3]
-[ext_resource path="res://assets/fonts/04b_03.fnt" type="BitmapFont" id=4]
+[ext_resource path="res://assets/sprites/pixel.png" type="Texture" id=3]
+[ext_resource path="res://assets/fonts/pixelated.fnt" type="BitmapFont" id=4]
+[ext_resource path="res://assets/fonts/04b_03.fnt" type="BitmapFont" id=5]
+[ext_resource path="res://assets/scripts/battle/actions_menu.gd" type="Script" id=6]
+[ext_resource path="res://assets/sprites/battle/arrow.png" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
 
@@ -78,7 +81,7 @@ func update_info(actor):
 	if actor.get_group() > 0:
 		get_node(\"name\").set(\"custom_colors/font_color\", Color(1.0, 0.25, 0.25, 1.0))
 	else:
-		get_node(\"name\").set(\"custom_colors/font_color\", Color(0.25, 0.25, 1.0, 1.0))
+		get_node(\"name\").set(\"custom_colors/font_color\", Color(\"384ec4\"))
 		
 	get_node(\"health/value\").set_text(str(actor.HP, \"/\", actor.maxHP))
 	
@@ -209,17 +212,23 @@ margin/top = 540.0
 margin/right = 240.0
 margin/bottom = 405.0
 
-[node name="actorInfo" type="Panel" parent="userInterface/BEBE"]
+[node name="actorInfo" type="TextureFrame" parent="userInterface/BEBE"]
 
+editor/display_folded = true
+visibility/visible = false
 hint/tooltip = "hahah ah"
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 2.0
-margin/top = 114.0
-margin/right = 50.0
-margin/bottom = 133.0
+margin/left = 3.0
+margin/top = 113.0
+margin/right = 51.0
+margin/bottom = 132.0
+texture = ExtResource( 3 )
+modulate = Color( 0.171858, 0.170685, 0.183594, 1 )
+expand = true
+stretch_mode = 0
 script/script = SubResource( 2 )
 
 [node name="name" type="Label" parent="userInterface/BEBE/actorInfo"]
@@ -232,7 +241,7 @@ margin/left = 3.0
 margin/top = 0.0
 margin/right = 40.0
 margin/bottom = 9.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Guy"
 percent_visible = 1.0
@@ -249,7 +258,7 @@ margin/left = 3.0
 margin/top = 9.0
 margin/right = 43.0
 margin/bottom = 23.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "HP:"
 percent_visible = 1.0
@@ -266,16 +275,32 @@ margin/left = 12.0
 margin/top = 0.0
 margin/right = 52.0
 margin/bottom = 14.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "888/888"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="shadow" type="TextureFrame" parent="userInterface/BEBE/actorInfo"]
+
+visibility/behind_parent = true
+hint/tooltip = "hahah ah"
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 1.0
+margin/right = 49.0
+margin/bottom = 20.0
+texture = ExtResource( 3 )
+modulate = Color( 0.0390625, 0.0390625, 0.0390625, 1 )
+expand = true
+stretch_mode = 0
+
 [node name="BBEE" type="Control" parent="userInterface"]
 
-editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/scale = Vector2( 4, 4 )
@@ -323,8 +348,8 @@ margin/left = -130.0
 margin/top = -6.0
 margin/right = 110.0
 margin/bottom = 6.0
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color = Color( 0.976563, 0.624895, 0.213623, 1 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0.964844, 0.583977, 0.214828, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "LET THE BATTLE"
 align = 1
@@ -348,8 +373,8 @@ margin/left = -118.0
 margin/top = -7.0
 margin/right = 122.0
 margin/bottom = 5.0
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color = Color( 0.976563, 0.624895, 0.213623, 1 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0.964844, 0.583977, 0.214828, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "COMMENCE!"
 align = 1
@@ -370,8 +395,9 @@ margin/top = 0.0
 margin/right = 240.0
 margin/bottom = 135.0
 
-[node name="turnPanel" type="Panel" parent="userInterface/BBBB"]
+[node name="turnPanel" type="TextureFrame" parent="userInterface/BBBB"]
 
+visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -380,6 +406,10 @@ margin/left = 2.0
 margin/top = 2.0
 margin/right = 46.0
 margin/bottom = 14.0
+texture = ExtResource( 3 )
+modulate = Color( 0.171858, 0.170685, 0.183594, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="turn" type="Label" parent="userInterface/BBBB/turnPanel"]
 
@@ -391,7 +421,7 @@ margin/left = 3.0
 margin/top = 1.0
 margin/right = 31.0
 margin/bottom = 10.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Player"
 percent_visible = 1.0
@@ -410,16 +440,31 @@ margin/left = 4.0
 margin/top = 0.0
 margin/right = -15.0
 margin/bottom = 9.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "turn"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="shadow" type="TextureFrame" parent="userInterface/BBBB/turnPanel"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 1.0
+margin/right = 45.0
+margin/bottom = 13.0
+texture = ExtResource( 3 )
+modulate = Color( 0.0390625, 0.0390625, 0.0390625, 1 )
+expand = true
+stretch_mode = 0
+
 [node name="EEEE" type="Control" parent="userInterface"]
 
-visibility/visible = false
 rect/scale = Vector2( 4, 4 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -430,18 +475,22 @@ margin/top = 0.0
 margin/right = 240.0
 margin/bottom = 135.0
 
-[node name="actions" type="Panel" parent="userInterface/EEEE"]
+[node name="actions" type="TextureFrame" parent="userInterface/EEEE"]
 
-editor/display_folded = true
-visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 191.0
-margin/top = 78.0
-margin/right = 234.0
-margin/bottom = 131.0
+margin/left = 202.0
+margin/top = 104.0
+margin/right = 237.0
+margin/bottom = 132.0
+texture = ExtResource( 3 )
+modulate = Color( 0.171858, 0.170685, 0.183594, 1 )
+expand = true
+stretch_mode = 0
+script/script = ExtResource( 6 )
+options = 3
 
 [node name="move" type="Label" parent="userInterface/EEEE/actions"]
 
@@ -449,30 +498,30 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 4.0
-margin/top = 3.0
-margin/right = 48.0
-margin/bottom = 17.0
-custom_fonts/font = ExtResource( 3 )
+margin/left = 8.0
+margin/top = 1.0
+margin/right = 26.0
+margin/bottom = 11.0
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Move"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="act" type="Label" parent="userInterface/EEEE/actions"]
+[node name="attack" type="Label" parent="userInterface/EEEE/actions"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 4.0
-margin/top = 15.0
-margin/right = 48.0
-margin/bottom = 29.0
-custom_fonts/font = ExtResource( 3 )
+margin/left = 8.0
+margin/top = 9.0
+margin/right = 32.0
+margin/bottom = 19.0
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "Act"
+text = "Attack"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -483,11 +532,11 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 4.0
-margin/top = 27.0
-margin/right = 48.0
-margin/bottom = 41.0
-custom_fonts/font = ExtResource( 3 )
+margin/left = 8.0
+margin/top = 17.0
+margin/right = 24.0
+margin/bottom = 26.0
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Wait"
 percent_visible = 1.0
@@ -496,24 +545,72 @@ max_lines_visible = -1
 
 [node name="status" type="Label" parent="userInterface/EEEE/actions"]
 
+visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 4.0
-margin/top = 39.0
-margin/right = 48.0
-margin/bottom = 53.0
-custom_fonts/font = ExtResource( 3 )
+margin/left = 8.0
+margin/top = 25.0
+margin/right = 33.0
+margin/bottom = 34.0
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Status"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="arrow" type="TextureFrame" parent="userInterface/EEEE/actions"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 2.0
+margin/top = 3.0
+margin/right = 5.0
+margin/bottom = 8.0
+texture = ExtResource( 7 )
+modulate = Color( 0.219608, 0.305882, 0.768627, 1 )
+stretch_mode = 0
+
+[node name="shadow" type="TextureFrame" parent="userInterface/EEEE/actions/arrow"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 1.0
+margin/right = 4.0
+margin/bottom = 6.0
+texture = ExtResource( 7 )
+modulate = Color( 0, 0, 0, 1 )
+stretch_mode = 0
+
+[node name="shadow" type="TextureFrame" parent="userInterface/EEEE/actions"]
+
+visibility/behind_parent = true
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 1.0
+margin/top = 1.0
+margin/right = 36.0
+margin/bottom = 29.0
+texture = ExtResource( 3 )
+modulate = Color( 0.0390625, 0.0390625, 0.0390625, 1 )
+expand = true
+stretch_mode = 0
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Label" type="Label" parent="userInterface/EEEE"]
 
-visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -522,7 +619,7 @@ margin/left = 260.0
 margin/top = -124.0
 margin/right = 409.0
 margin/bottom = -92.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Blah Blah Blah Blah Blah! Bleh Bleh Bleh Bleh Bleh! Blih Blih Blih Blih Blih! Bloh Bloh Bloh Bloh Bloh! Bluh Bluh Bluh Bluh Bluh!"
 autowrap = true
@@ -556,7 +653,7 @@ margin/left = 115.0
 margin/top = 2.0
 margin/right = 318.0
 margin/bottom = 16.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Press W to show/hide scene colliders."
 percent_visible = 1.0
@@ -570,5 +667,11 @@ max_lines_visible = -1
 [connection signal="has_moved" from="cursor" to="." method="_on_cursor_has_moved"]
 
 [connection signal="intro_has_ended" from="userInterface/BBEE/letTheBattle" to="." method="_on_letTheBattle_intro_has_ended"]
+
+[connection signal="act_state_has_started" from="userInterface/EEEE/actions" to="." method="_on_actions_act_state_has_started"]
+
+[connection signal="has_finished" from="userInterface/EEEE/actions" to="." method="_on_actions_has_finished"]
+
+[connection signal="move_state_has_started" from="userInterface/EEEE/actions" to="." method="_on_actions_move_state_has_started"]
 
 

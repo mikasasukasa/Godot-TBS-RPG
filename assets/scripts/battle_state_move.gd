@@ -6,6 +6,7 @@ onready var manager = get_parent()
 var frame = 0
 var time = 12
 var actor
+var from
 
 func _ready():
 	print("Move state started, my actor: ", actor.name, ". Move: ", actor.move)
@@ -78,15 +79,19 @@ func _process(dt):
 
 func _input(ev):
 	if ev.is_action_pressed("ui_cancel"):
-		finish()
+		finish(true)
 	elif ev.is_action_pressed("ui_accept"):
 		#print("AIUSHDIA")
 		
 		start()
 
-func finish():
-	#manager.get_cursor().set_pos(actor.get_pos())
-	manager.activate(true)
+func finish(_move_back):
+	if _move_back:
+		manager.get_cursor().set_pos(actor.get_pos())
+	manager.get_cursor().activate(false)
+	#manager.activate(true)
+	from.activate(true)
+	from.set_hidden(false)
 	queue_free()
 
 func start():
@@ -99,7 +104,7 @@ func start():
 		if terrain.world_to_map(m.get_pos()) == cursorPos:
 			actor.find_path_to(cursorPos)
 			actor.state += 1
-			finish()
+			finish(false)
 			get_tree().set_input_as_handled()
 			break
 

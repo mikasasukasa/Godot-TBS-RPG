@@ -8,7 +8,7 @@ func start(_manager):
 	var battle = manager.scene.add_child(Battle)
 
 func end():
-	print(get_name(), " has ended!")
+	#print(get_name(), " has ended!")
 	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()

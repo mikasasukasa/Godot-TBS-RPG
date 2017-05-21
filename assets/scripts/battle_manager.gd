@@ -13,7 +13,6 @@ signal turn_has_changed
 signal has_found_an_actor
 
 func _ready():
-	
 	scene.manager = self
 	
 	enemyAI = preload("res://assets/scripts/battle_ai.gd").new()
@@ -26,20 +25,13 @@ func _ready():
 	
 	fix_position(get_cursor())
 	
-	get_cursor().activate(false)
-#	var t = scene.get_terrain_collider().get_used_rect()
-#	#var m = max(t.x, t.y)
-#	mstar = preload("res://assets/scripts/mstar.gd").new(50, 50)
-#	mstar.block_based_on_tilemap(scene.get_terrain_collider())
-	
-	get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
-	
-	if turn == 0:
-		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
-	else:
-		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
-	
 	set_process_input(true)
+
+func start():
+	get_node("userInterface/BBBB/turnPanel").set_hidden(false)
+	get_cursor().set_hidden(false)
+	get_cursor().activate(true)
+	activate(true)
 
 func set_turn(_turn):
 	for actor in scene.get_actors():
@@ -50,7 +42,7 @@ func set_turn(_turn):
 	get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
 	
 	if turn == 0:
-		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
+		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color("384ec4"))
 	else:
 		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
 	
@@ -68,17 +60,9 @@ func get_turn_name(_turn):
 func _input(ev):
 	#print("SD")
 	if ev.is_action_pressed("ui_finish_turn"):
-		#print("IAUSHDIUASHDIUSAHDI")
-		if turn == 0:
+		if active && turn == 0:
 			set_turn(1)
 			activate(false)
-			get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
-			
-			if turn == 0:
-				get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(0.25, 0.25, 1.0, 1.0))
-			else:
-				get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
-			
 			print("Turn has changed to ", turn)
 			
 			enemyAI.start()
@@ -125,25 +109,54 @@ func _on_cursor_has_moved(sender):
 
 func _on_cursor_has_clicked(sender):
 	if active && hovered:
-		if hovered.state == 0:
-			activate(false)
-			sender.activate(false)
-			var _moveState = preload("res://assets/prefabs/battle_state_move.prefab.tscn").instance()
-			_moveState.actor = hovered
-			add_child(_moveState)
-		elif hovered.state == 1:
-			activate(false)
-			sender.activate(false)
-			var _actState = preload("res://assets/prefabs/battle_state_act.prefab.tscn").instance()
-			_actState.actor = hovered
-			add_child(_actState)
+		var actions = get_node("userInterface/EEEE/actions")
+		actions.set_hidden(false)
+		actions.activate(true)
+		actions.index = 0
+		actions.update_info(hovered)
+		
+		get_cursor().activate(false)
+		activate(false)
+	
+	
+	
+#	if active && hovered:
+#		if hovered.state == 0:
+#			activate(false)
+#			sender.activate(false)
+#			var _moveState = preload("res://assets/prefabs/battle_state_move.prefab.tscn").instance()
+#			_moveState.actor = hovered
+#			add_child(_moveState)
+#		elif hovered.state == 1:
+#			activate(false)
+#			sender.activate(false)
+#			var _actState = preload("res://assets/prefabs/battle_state_act.prefab.tscn").instance()
+#			_actState.actor = hovered
+#			add_child(_actState)
 
 func activate(enable):
 	print("BattleManager state changed to ", enable, ".")
 	active = enable
 
 func _on_letTheBattle_intro_has_ended():
-	activate(true)
-	get_cursor().set_hidden(false)
+	start()
+
+func _on_actions_move_state_has_started(_sender, _actor):
+	var _moveState = preload("res://assets/prefabs/battle_state_move.prefab.tscn").instance()
+	_moveState.actor = _actor
+	_moveState.from = _sender
+	add_child(_moveState)
+	
 	get_cursor().activate(true)
-	pass # replace with function body
+
+func _on_actions_act_state_has_started(_sender, _actor):
+	var _actState = preload("res://assets/prefabs/battle_state_act.prefab.tscn").instance()
+	_actState.actor = _actor
+	_actState.from = _sender
+	add_child(_actState)
+	
+	get_cursor().activate(true)
+
+func _on_actions_has_finished():
+	activate(true)
+	get_cursor().activate(true)

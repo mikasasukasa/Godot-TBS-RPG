@@ -10,9 +10,18 @@ export var attackPower = 24
 export var maxHP = 100
 export var HP = 100
 
+export(Texture) var hitAnimation
+var walkAnimation
+
+var performingAnimation = false
+
+export var _gambit = ""
+
 var path = []
 
 var state = 0
+
+var AI
 
 #var nearest = {}
 var myManagerAI = null
@@ -21,6 +30,8 @@ var isAI = false
 
 var animIndex = 0.0
 var animAngle = 0
+
+var gambit
 
 var aiActionEndTimer = -1
 
@@ -31,13 +42,39 @@ onready var scene = get_parent().get_parent()
 
 func _ready():
 	#path.append(Vector2(50, 50))
+	#init_gambit()
+	
+	AI = preload("res://assets/scripts/battle/actor_AI.gd").new(self)
+	
+	#walkAnimation = get_texture()
 	set_process(true)
 	pass
+
+func init_gambit():
+	var filename = "res://assets/prefabs/gambits/" + _gambit + ".gambits.tscn"
+	var file = File.new()
+	
+	if file.file_exists(filename):
+		var g = load(filename)
+		gambit = g.instance()
+		Console.show(Console.AI, "Gambit initialized properly!")
+	else:
+		Console.show(Console.AI, "Gambit not found!")
 
 func should_move():
 	return path.size() > 0
 
 func _process(delta):
+	
+	if performingAnimation:
+		if animIndex < 3.0 - 0.2:
+			animIndex += 0.2
+			set_frame(animAngle * 4 + floor(animIndex))
+		else:
+			animIndex = 0.0
+			performingAnimation = false
+			set_texture(walkAnimation)
+	
 	if isAI && isWaitingForNextStepAI:
 		if nextStepTimerAI <= 0:
 			isWaitingForNextStepAI = false
@@ -69,7 +106,7 @@ func _process(delta):
 				animIndex = 0.0
 			set_frame(animAngle * 4 + floor(animIndex))
 			
-			print("FRAME: ", animAngle * 4 + floor(animIndex))
+			#Console.show(Console.ACTOR, ["FRAME: ", animAngle * 4 + floor(animIndex)])
 				
 			translate(motion.normalized() * 0.5)
 
@@ -81,27 +118,27 @@ func ai_make_decision(_manager):
 	isAI = true
 	myManagerAI = _manager
 	
-	if state == 0:
-		print("AI SHOULD MOVE")
-		ai_move()
-		state += 1
-	elif state == 1:
-		print("AI SHOULD ACT")
-		var a = ai_act()
-		
-		if a:
-			state += 1
-		else:
-			print("AI SHOULD SHOULD ABORT")
-			set_gray(true)
-			state += 1
-			#isAI = false
-			#myManagerAI.make_decision()
-	else:
-		print("AI SHOULD SHOULD END")
-		set_gray(true)
-		isAI = false
-		myManagerAI.make_decision()
+#	if state == 0:
+#		#Console.show(Console.AI, "AI SHOULD MOVE")
+#		ai_move()
+#		state += 1
+#	elif state == 1:
+#		#Console.show(Console.AI, "AI SHOULD ACT")
+#		var a = ai_act()
+#		
+#		if a:
+#			state += 1
+#		else:
+#			#print("AI SHOULD SHOULD ABORT")
+#			set_gray(true)
+#			state += 1
+#			#isAI = false
+#			#myManagerAI.make_decision()
+#	else:
+#		#print("AI SHOULD SHOULD END")
+#		set_gray(true)
+#		isAI = false
+#		myManagerAI.make_decision()
 	
 
 func set_gray(enable):
@@ -197,6 +234,9 @@ func get_movable_panels():
 			#getting the position
 			var pos = Vector2(x, y)
 			
+			if pos == source:
+				continue
+			
 			#if the panel is occupied by an actor
 			var isOccupied = false
 			for p in actorsPos:
@@ -275,6 +315,44 @@ func get_nearest_foe_and_info():
 	#then we return the dictionary with the nearest and some useful data!
 	return n
 
+func get_furthest_foe_and_info():
+	var furthest = null
+	var distance = 0
+	var n = {}
+	
+	#get my position in the map ("grid")
+	var source = get_map_position()
+	
+	#loop through the foes
+	for foe in get_foes():
+		#get its position and find a path to it
+		var pos = foe.get_map_position()
+		var path = scene.get_mstar().find_path_v(source, pos)
+		
+		#if nearest hasn't been set or the distance to THIS guy is lower than the current nearest
+		if path.size() > distance:
+			#this is the new nearest
+			distance = path.size()
+			furthest = foe
+			n["path"] = path
+			n["actor"] = nearest
+			n["distance"] = distance - 1
+	
+	#then we return the dictionary with the nearest and some useful data!
+	return n
+
+func get_actor_info(_actor):
+	var pos = _actor.get_map_position()
+	var path = scene.get_mstar().find_path_v(get_map_position(), _actor.get_map_position())
+	
+	#if nearest hasn't been set or the distance to THIS guy is lower than the current nearest
+	if path.size() > distance:
+		#this is the new nearest
+		distance = path.size()
+		furthest = foe
+		n["path"] = path
+		n["actor"] = nearest
+		n["distance"] = distance - 1
 
 func get_map_position():
 	return scene.get_terrain().world_to_map(get_pos())
@@ -289,11 +367,10 @@ func get_foes():
 	
 	return _f
 
-
-func ai_move():
+func AI_move_towards_actor(_actor):
 	#get the nearest enemy
-	var nearest = get_nearest_foe_and_info()
-	print("AI:", name, " just found ", nearest["actor"].name, " to be the nearest. Distance: ", nearest["distance"])
+	#var nearest = get_nearest_foe_and_info()
+	#print("AI:", name, " just found ", nearest["actor"].name, " to be the nearest. Distance: ", nearest["distance"])
 	
 	#invert the path to it because we will be checking from backwards
 	nearest["path"].invert()
@@ -303,16 +380,10 @@ func ai_move():
 	for i in nearest["path"]:
 		#if i can move to that panel, do so
 		if can_move_to(movable, i):
-			print("AI: ", name, " can move to ", i)
 			find_path_to(i)
-			#set_pos(scene.map_to_world_fixed(i))
-			break
-		else:
-			#if not, keep trying!
-			print("AI: ", name, " can NOT move to ", i, ", move on.")
 
 func ai_act():
-	var nearest = get_nearest_foe_and_info()
+	var nearest = get_nearest_foe_and_info();
 	
 	isWaitingForNextStepAI = true
 	
@@ -329,6 +400,12 @@ func attack(target):
 	dam.set_pos(target.get_pos() + Vector2(0, -10))
 	get_parent().add_child(dam)
 	target.HP -= attackPower
+	
+	#target.perform_animation("hit")
+	
+	#if target.hitAnimation:
+	#	target.set_texture(target.hitAnimation)
+	
 	dam.get_node("value").set_text(str(attackPower))
 	
 	if target.HP <= 0:
@@ -358,7 +435,16 @@ func can_attack(targettablePanels, target):
 	#if the path exists (> 0) and its size and equals or is lower than move (<=), vòila
 	#return path.size() > 0 && path.size() <= move
 
-
+func perform_animation(anim):
+	
+	var _anim
+	
+	if anim == "hit" && hitAnimation:
+		_anim = hitAnimation
+	
+	if _anim:
+		set_texture(_anim)
+		performingAnimation = true
 
 func block_enemy_cells(enable):
 	if enable:
@@ -368,8 +454,8 @@ func block_enemy_cells(enable):
 				var p = _actor.get_map_position()
 				scene.get_mstar().forbidv(p)
 				
-				var m = scene.get_mstar()
-				print(m.astar.get_point_pos(m.flatten(p.x, p.y)), " has been FORBIDDEN!")
+				#var m = scene.get_mstar()
+				#print(m.astar.get_point_pos(m.flatten(p.x, p.y)), " has been FORBIDDEN!")
 	else:
 		for _actor in scene.get_actors():
 			#forbid actor's position if it's from another team
@@ -395,7 +481,7 @@ func look_at(position):
 	
 	#set_frame(get_angle_side(angle))
 	
-	print("looking at angle: ", angle, " --> ", get_angle_string(angle))
+	#print("looking at angle: ", angle, " --> ", get_angle_string(angle))
 
 func get_angle_string(degrees):
 	if abs(115 - degrees) < 20:

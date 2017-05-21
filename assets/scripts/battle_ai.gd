@@ -5,19 +5,19 @@ var foes
 var available
 var timer = 30
 var endTimer = 30
+
 func start():
 	friends = get_friends()
 	available = [] + friends
-	foes = get_foes()
 	
-	print("Friends: ", friends.size())
-	print("Foes: ", foes.size())
+	Console.show(Console.AI, "AI starts its play!")
+	Console.show(Console.AI, "Friends alive: " + str(friends.size()))
 	
 	make_decision()
-	#set_process(true)
 
 func make_decision():
 	foes = get_foes()
+	Console.show(Console.AI, "Foes alive: " + str(foes.size()))
 	
 	if foes.size() == 0:
 		set_process(true)
@@ -38,7 +38,7 @@ func _process(dt):
 		manager.activate(true)
 		manager.set_turn(0)
 		set_process(false)
-		print("X MARKS THE SPOT ------------------------")
+		Console.show(Console.AI, "X MARKS THE SPOT ------------------------")
 	else:
 		endTimer -= 1
 

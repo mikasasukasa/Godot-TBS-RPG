@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://assets/scripts/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
@@ -7,14 +7,15 @@
 [ext_resource path="res://assets/sprites/actors/monk.png" type="Texture" id=5]
 [ext_resource path="res://assets/scripts/actor_2.gd" type="Script" id=6]
 [ext_resource path="res://assets/sprites/actors/ninja.png" type="Texture" id=7]
-[ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=8]
-[ext_resource path="res://assets/scripts/cutscene/cutscene.gd" type="Script" id=9]
-[ext_resource path="res://assets/scripts/cutscene/wait.gd" type="Script" id=10]
-[ext_resource path="res://assets/scripts/cutscene/unhide_actor.gd" type="Script" id=11]
-[ext_resource path="res://assets/scripts/cutscene/move_actor.gd" type="Script" id=12]
-[ext_resource path="res://assets/scripts/cutscene/start_dialogue.gd" type="Script" id=13]
-[ext_resource path="res://assets/scripts/cutscene/teleport_actor.gd" type="Script" id=14]
-[ext_resource path="res://assets/scripts/cutscene/start_battle.gd" type="Script" id=15]
+[ext_resource path="res://assets/sprites/actors/ninja_hit.png" type="Texture" id=8]
+[ext_resource path="res://assets/sprites/actors/prince.png" type="Texture" id=9]
+[ext_resource path="res://assets/scripts/cutscene/cutscene.gd" type="Script" id=10]
+[ext_resource path="res://assets/scripts/cutscene/wait.gd" type="Script" id=11]
+[ext_resource path="res://assets/scripts/cutscene/unhide_actor.gd" type="Script" id=12]
+[ext_resource path="res://assets/scripts/cutscene/move_actor.gd" type="Script" id=13]
+[ext_resource path="res://assets/scripts/cutscene/start_dialogue.gd" type="Script" id=14]
+[ext_resource path="res://assets/scripts/cutscene/teleport_actor.gd" type="Script" id=15]
+[ext_resource path="res://assets/scripts/cutscene/start_battle.gd" type="Script" id=16]
 
 [sub_resource type="GDScript" id=1]
 
@@ -152,7 +153,7 @@ __meta__ = {
 ]]
 
 visibility/opacity = 0.0
-transform/pos = Vector2( 81.353, 93.2576 )
+transform/pos = Vector2( 82.353, 93.2576 )
 texture = ExtResource( 5 )
 offset = Vector2( 0, -3 )
 vframes = 4
@@ -166,6 +167,8 @@ attackRange = 1
 attackPower = 24
 maxHP = 68
 HP = 68
+hitAnimation = null
+_gambit = ""
 
 [node name="monkB" type="Sprite" parent="objects" groups=[
 "actors",
@@ -186,6 +189,8 @@ attackRange = 1
 attackPower = 24
 maxHP = 68
 HP = 68
+hitAnimation = null
+_gambit = ""
 
 [node name="monkC" type="Sprite" parent="objects" groups=[
 "actors",
@@ -206,6 +211,8 @@ attackRange = 1
 attackPower = 24
 maxHP = 68
 HP = 68
+hitAnimation = null
+_gambit = ""
 
 [node name="monkD" type="Sprite" parent="objects" groups=[
 "actors",
@@ -226,6 +233,8 @@ attackRange = 1
 attackPower = 24
 maxHP = 68
 HP = 68
+hitAnimation = null
+_gambit = ""
 
 [node name="ninjaA" type="Sprite" parent="objects" groups=[
 "actors",
@@ -245,6 +254,8 @@ attackRange = 1
 attackPower = 19
 maxHP = 45
 HP = 45
+hitAnimation = ExtResource( 8 )
+_gambit = ""
 
 [node name="ninjaB" type="Sprite" parent="objects" groups=[
 "actors",
@@ -264,6 +275,8 @@ attackRange = 1
 attackPower = 19
 maxHP = 45
 HP = 45
+hitAnimation = ExtResource( 8 )
+_gambit = ""
 
 [node name="ninjaC" type="Sprite" parent="objects" groups=[
 "actors",
@@ -284,6 +297,8 @@ attackRange = 1
 attackPower = 19
 maxHP = 45
 HP = 45
+hitAnimation = ExtResource( 8 )
+_gambit = ""
 
 [node name="ninjaD" type="Sprite" parent="objects" groups=[
 "actors",
@@ -304,6 +319,8 @@ attackRange = 1
 attackPower = 19
 maxHP = 45
 HP = 45
+hitAnimation = ExtResource( 8 )
+_gambit = ""
 
 [node name="vladimir" type="Sprite" parent="objects" groups=[
 "actors",
@@ -311,7 +328,7 @@ HP = 45
 
 visibility/opacity = 0.0
 transform/pos = Vector2( -32.6754, 27.005 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 offset = Vector2( 0, -4 )
 vframes = 4
 hframes = 4
@@ -320,166 +337,167 @@ name = "Vladimir"
 group = 1
 move = 5
 attackRange = 1
-attackPower = 24
-maxHP = 100
-HP = 100
+attackPower = 33
+maxHP = 108
+HP = 108
+hitAnimation = null
+_gambit = ""
 
 [node name="CASTLE_INTRO" type="Node" parent="."]
 
-editor/display_folded = true
-script/script = ExtResource( 9 )
+script/script = ExtResource( 10 )
 
 [node name="wait 15f" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 15
 
 [node name="unhide MonkC" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/monkC")
 waitEnd = true
 
 [node name="move MonkC to (7, 5)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/monkC")
 position = Vector2( 7, 5 )
 shouldWaitArrival = false
 
 [node name="wait 15f (2)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 15
 
 [node name="unhide MonkD" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/monkD")
 waitEnd = true
 
 [node name="unhide MonkA" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/monkA")
 waitEnd = true
 
 [node name="moveMonkD" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/monkD")
 position = Vector2( 8, 4 )
 shouldWaitArrival = false
 
 [node name="moveMonkA" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/monkA")
 position = Vector2( 8, 6 )
 shouldWaitArrival = false
 
 [node name="wait 25f" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 25
 
 [node name="unhide MonkB" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/monkB")
 waitEnd = true
 
 [node name="moveMonkB" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/monkB")
 position = Vector2( 9, 5 )
 shouldWaitArrival = true
 
 [node name="wait 100f" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 25
 
 [node name="unhide Vladimir" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/vladimir")
 waitEnd = true
 
 [node name="move Vladimir to (2, 5)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/vladimir")
 position = Vector2( 3, 5 )
 shouldWaitArrival = true
 
 [node name="wait 45f" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 45
 
 [node name="start dialogue CASTLE_INTRO_01" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 13 )
+script/script = ExtResource( 14 )
 dialogue = "CASTLE_INTRO_01"
 
 [node name="wait 15f (3)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 45
 
 [node name="unhide NinjaA" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/ninjaA")
 waitEnd = true
 
 [node name="unhide NinjaB" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/ninjaB")
 waitEnd = true
 
 [node name="move NinjaA to (2, 6)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/ninjaA")
 position = Vector2( 2, 6 )
 shouldWaitArrival = false
 
 [node name="move NinjaB to (2, 4)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 12 )
+script/script = ExtResource( 13 )
 actor = NodePath("../../objects/ninjaB")
 position = Vector2( 2, 4 )
 shouldWaitArrival = true
 
 [node name="teleport NinjaC to (16, 5)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 14 )
+script/script = ExtResource( 15 )
 actor = NodePath("../../objects/ninjaC")
 position = Vector2( 16, 5 )
 
 [node name="unhide NinjaC" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/ninjaC")
 waitEnd = true
 
 [node name="unhide NinjaD" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 11 )
+script/script = ExtResource( 12 )
 actor = NodePath("../../objects/ninjaD")
 waitEnd = true
 
 [node name="wait 45f (2)" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 10 )
+script/script = ExtResource( 11 )
 frames = 45
 
 [node name="start battle" type="Node" parent="CASTLE_INTRO"]
 
-script/script = ExtResource( 15 )
+script/script = ExtResource( 16 )
 
 

@@ -8,7 +8,7 @@ var manager
 var actorNode
 
 func start(_manager):
-	print(get_name(), " has started!")
+	#print(get_name(), " has started!")
 	manager = _manager
 	
 	actorNode = get_node(actor)
@@ -25,7 +25,7 @@ func skip():
 	end()
 
 func end():
-	print(get_name(), " has ended!")
+	#print(get_name(), " has ended!")
 	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()

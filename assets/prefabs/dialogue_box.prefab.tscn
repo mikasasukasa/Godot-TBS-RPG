@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://assets/scripts/dialogue_box.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/pixelated.fnt" type="BitmapFont" id=2]
-[ext_resource path="res://assets/sprites/actors/portraits/prince2.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/pixel.png" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/pixelated.fnt" type="BitmapFont" id=3]
+[ext_resource path="res://assets/sprites/actors/portraits/prince2.png" type="Texture" id=4]
 
 [node name="dialogueBox" type="CanvasLayer"]
 
@@ -27,7 +28,7 @@ margin/top = 540.0
 margin/right = 720.0
 margin/bottom = 405.0
 
-[node name="box" type="Panel" parent="EBBB"]
+[node name="box" type="TextureFrame" parent="EBBB"]
 
 anchor/top = 1
 anchor/right = 1
@@ -40,6 +41,10 @@ margin/left = 11.0
 margin/top = 37.0
 margin/right = 8.0
 margin/bottom = 5.0
+texture = ExtResource( 2 )
+modulate = Color( 0.171858, 0.170685, 0.183594, 1 )
+expand = true
+stretch_mode = 0
 
 [node name="speaker" type="Label" parent="EBBB/box"]
 
@@ -51,7 +56,7 @@ margin/left = 4.0
 margin/top = 1.0
 margin/right = 67.0
 margin/bottom = 11.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0.222443, 0.307925, 0.769531, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/line_spacing = 0
@@ -70,7 +75,7 @@ margin/left = 4.0
 margin/top = 10.0
 margin/right = 219.0
 margin/bottom = 32.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/line_spacing = 0
 text = "Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech Speech "
@@ -91,7 +96,7 @@ margin/left = 1.0
 margin/top = 2.0
 margin/right = 29.0
 margin/bottom = 30.0
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 modulate = Color( 0, 0, 0, 1 )
 stretch_mode = 0
 
@@ -105,7 +110,26 @@ margin/left = -1.0
 margin/top = -1.0
 margin/right = 27.0
 margin/bottom = 27.0
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
+stretch_mode = 0
+
+[node name="shadow" type="TextureFrame" parent="EBBB"]
+
+visibility/behind_parent = true
+anchor/top = 1
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 12.0
+margin/top = 36.0
+margin/right = 7.0
+margin/bottom = 4.0
+texture = ExtResource( 2 )
+modulate = Color( 0.0390625, 0.0390625, 0.0390625, 1 )
+expand = true
 stretch_mode = 0
 
 

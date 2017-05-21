@@ -11,7 +11,7 @@ func start(_manager):
 	end()
 
 func end():
-	print(get_name(), " has ended!")
+	#print(get_name(), " has ended!")
 	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()

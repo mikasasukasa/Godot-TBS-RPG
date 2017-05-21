@@ -6,6 +6,7 @@ onready var manager = get_parent()
 var frame = 0
 var time = 12
 var actor
+var from
 
 func _ready():
 	print("ACT state started, my actor: ", actor.name, ". Move: ", actor.move)
@@ -86,7 +87,13 @@ func _input(ev):
 
 func finish():
 	manager.get_cursor().set_pos(actor.get_pos())
-	manager.activate(true)
+	manager.get_cursor().activate(false)
+	#manager.activate(true)
+	from.activate(true)
+	from.set_hidden(false)
+	
+	#manager.get_cursor().set_pos(actor.get_pos())
+	#manager.activate(true)
 	queue_free()
 
 func start():

@@ -4,12 +4,11 @@ export var frames = 0
 var manager
 
 func start(_manager):
-	print(get_name(), " has started!")
 	manager = _manager
 	set_process(true)
 
 func end():
-	print(get_name(), " has ended!")
+	#print(get_name(), " has ended!")
 	manager.contentNow.pop_front()
 	manager.content.pop_front()
 	manager.work()

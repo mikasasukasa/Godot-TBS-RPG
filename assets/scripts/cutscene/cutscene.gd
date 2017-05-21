@@ -18,16 +18,18 @@ func start():
 		if c.should_wait_end():
 			break
 	
+	Console.show(Console.CUT, get_name() + " has started!")
 	work()
 
 func work():
 	if content.size() > 0:
-		content.front().start(self)
+		var f = content.front()
+		Console.show(Console.CUT, f.get_name() + " has started!")
+		f.start(self)
 	else:
-		print(get_name(), " has ended!")
+		Console.show(Console.CUT, get_name() + " has ended!")
 
 func _input(ev):
 	if ev.is_action_pressed("ui_skip_cutscene"):
-		
 		for c in get_children():
 			c.skip()
