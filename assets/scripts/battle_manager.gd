@@ -12,20 +12,27 @@ var enemyAI
 signal turn_has_changed
 signal has_found_an_actor
 
+var groupManagers = []
+
+const GROUP_MANAGERS = 3
+const GROUP_PLAYER   = 0
+const GROUP_GUEST    = 1
+const GROUP_ENEMY    = 2
+
+
 func _ready():
-	scene.manager = self
+	#create the group managers, marking 0 as the player (non-AI)
+	initialize_group_managers()
 	
-	enemyAI = preload("res://assets/scripts/battle_ai.gd").new()
-	enemyAI.manager = self
-	set_turn(0)
-	add_child(enemyAI)
+	#set the first turn
+	set_turn(GROUP_PLAYER)
 	
-	for a in scene.get_actors():
-		fix_position(a)
+	#fix actors positions and add them to their group managers
+	for _actor in scene.get_actors():
+		groupManagers[_actor.group].actors.append(_actor)
+		fix_position(_actor)
 	
 	fix_position(get_cursor())
-	
-	set_process_input(true)
 
 func start():
 	get_node("userInterface/BBBB/turnPanel").set_hidden(false)
@@ -34,39 +41,59 @@ func start():
 	activate(true)
 
 func set_turn(_turn):
+	turn = _turn
+	Console.show(Console.BATTLE, "Turn has changed to " + str(turn))
+	
+	#make actors have color again
 	for actor in scene.get_actors():
 		actor.set_gray(false)
-		actor.state = 0
 	
-	turn = _turn
-	get_node("userInterface/BBBB/turnPanel/turn").set_text(str(get_turn_name(turn)))
+	#update turn display panel
+	var panel = get_node("userInterface/BBBB/turnPanel/turn")
+	panel.set("custom_colors/font_color", get_turn_color(turn))
+	panel.set_text(get_turn_name(turn))
 	
-	if turn == 0:
-		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color("384ec4"))
-	else:
-		get_node("userInterface/BBBB/turnPanel/turn").set("custom_colors/font_color", Color(1.0, 0.25, 0.25, 1.0))
-	
-	print("Turn has changed to ", turn)
-	#emit_signal("turn_has_changed", turn)
-	
-	get_cursor().activate(turn == 0)
+	#let the group manager knows it's its time to play
+	groupManagers[turn].start()
 
 func get_turn_name(_turn):
 	if _turn == 0:
 		return "Player"
-	else:
+	elif _turn == 1:
+		return "Guest"
+	elif _turn == 2:
 		return "Enemy"
 
-func _input(ev):
+func get_turn_color(_turn):
+	if _turn == 0:
+		return Color("384ec4")
+	elif _turn == 1:
+		return Color(0.25, 1.0, 1.0, 1.0)
+	elif _turn == 2:
+		return Color(1.0, 0.25, 0.25, 1.0)
+
+func end_turn():
+	var next = turn + 1
+	
+	if next < 2:
+		if groupManagers[next].actors.size() == 0:
+			next += 1
+	else:
+		next = 0
+	
+	set_turn(next)
+
+#func _input(ev):
 	#print("SD")
-	if ev.is_action_pressed("ui_finish_turn"):
-		if active && turn == 0:
-			set_turn(1)
-			activate(false)
-			print("Turn has changed to ", turn)
-			
-			enemyAI.start()
-			get_tree().set_input_as_handled()
+#	pass
+#	if ev.is_action_pressed("ui_finish_turn"):
+#		if active && turn == 0:
+#			set_turn(1)
+#			#activate(false)
+#			#print("Turn has changed to ", turn)
+#			
+#			#enemyAI.start()
+#			get_tree().set_input_as_handled()
 
 func get_scene():
 	return scene
@@ -160,3 +187,20 @@ func _on_actions_act_state_has_started(_sender, _actor):
 func _on_actions_has_finished():
 	activate(true)
 	get_cursor().activate(true)
+
+
+func initialize_group_managers():
+	var GroupManager = preload("res://assets/prefabs/battle/group_manager.prefab.tscn")
+	
+	for i in range(GROUP_MANAGERS):
+		var gm = GroupManager.instance()
+		gm.manager = self
+		gm.index = i
+		gm.isAI = (i != 0)
+		
+		get_node("groupManagers").add_child(gm)
+		groupManagers.append(gm)
+#	
+	groupManagers[GROUP_PLAYER].friendsWith = [ true,  true, false]
+	groupManagers[GROUP_GUEST].friendsWith  = [ true,  true, false]
+	groupManagers[GROUP_ENEMY].friendsWith  = [false, false,  true]

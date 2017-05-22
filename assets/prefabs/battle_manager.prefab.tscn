@@ -301,6 +301,7 @@ stretch_mode = 0
 
 [node name="BBEE" type="Control" parent="userInterface"]
 
+editor/display_folded = true
 anchor/right = 1
 anchor/bottom = 1
 rect/scale = Vector2( 4, 4 )
@@ -385,6 +386,7 @@ max_lines_visible = -1
 
 [node name="BBBB" type="Control" parent="userInterface"]
 
+editor/display_folded = true
 rect/scale = Vector2( 4, 4 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
@@ -477,6 +479,7 @@ margin/bottom = 135.0
 
 [node name="actions" type="TextureFrame" parent="userInterface/EEEE"]
 
+visibility/visible = false
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -659,6 +662,8 @@ text = "Press W to show/hide scene colliders."
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="groupManagers" type="Node" parent="."]
 
 [connection signal="has_found_an_actor" from="." to="userInterface/BEBE/actorInfo" method="_on_battle_has_found_an_actor"]
 

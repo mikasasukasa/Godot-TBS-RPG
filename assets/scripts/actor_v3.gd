@@ -10,15 +10,18 @@ export var attackPower = 24
 export var maxHP = 100
 export var HP = 100
 
+export(Texture) var hitAnimation
+var walkAnimation
+
+var performingAnimation = false
+
 export var _gambit = ""
 
 var path = []
 
 var state = 0
 
-const speed = 0.5
-
-var AI = null
+var AI
 
 #var nearest = {}
 var myManagerAI = null
@@ -41,6 +44,7 @@ func _ready():
 	#path.append(Vector2(50, 50))
 	#init_gambit()
 	
+	AI = preload("res://assets/scripts/battle/actor_AI.gd").new(self)
 	
 	#walkAnimation = get_texture()
 	set_process(true)
@@ -62,26 +66,26 @@ func should_move():
 
 func _process(delta):
 	
-#	if performingAnimation:
-#		if animIndex < 3.0 - 0.2:
-#			animIndex += 0.2
-#			set_frame(animAngle * 4 + floor(animIndex))
-#		else:
-#			animIndex = 0.0
-#			performingAnimation = false
-#			set_texture(walkAnimation)
+	if performingAnimation:
+		if animIndex < 3.0 - 0.2:
+			animIndex += 0.2
+			set_frame(animAngle * 4 + floor(animIndex))
+		else:
+			animIndex = 0.0
+			performingAnimation = false
+			set_texture(walkAnimation)
 	
-#	if isAI && isWaitingForNextStepAI:
-#		if nextStepTimerAI <= 0:
-#			isWaitingForNextStepAI = false
-#			ai_make_decision(myManagerAI)
-#		else:
-#			nextStepTimerAI -= 1
+	if isAI && isWaitingForNextStepAI:
+		if nextStepTimerAI <= 0:
+			isWaitingForNextStepAI = false
+			ai_make_decision(myManagerAI)
+		else:
+			nextStepTimerAI -= 1
 	
 	if should_move():
 		var motion = path[0] - get_pos()
 		
-		if motion.length_squared() < speed * speed:
+		if motion.length_squared() < 0.5 * 0.5:
 			set_pos(path[0])
 				
 			if path.size() > 1:
@@ -89,21 +93,22 @@ func _process(delta):
 			else:
 				animIndex = 0
 				set_frame(animAngle * 4 + floor(animIndex))
+				#translate(motion.normalized() * 0.5)
 			
 			path.pop_front()
 			
 			if isAI && path.size() == 0:
 				ai_wait_and_step(15)
 		else:
-			handle_animation()
+			if animIndex < 3.0 - 0.2:
+				animIndex += 0.2
+			else:
+				animIndex = 0.0
 			set_frame(animAngle * 4 + floor(animIndex))
-			translate(motion.normalized() * speed)
-
-func handle_animation():
-	if animIndex < 3.0 - 0.2:
-		animIndex += 0.2
-	else:
-		animIndex = 0.0
+			
+			#Console.show(Console.ACTOR, ["FRAME: ", animAngle * 4 + floor(animIndex)])
+				
+			translate(motion.normalized() * 0.5)
 
 func ai_wait_and_step(time):
 	nextStepTimerAI = time
@@ -284,13 +289,6 @@ func get_nearest_foe():
 	
 	return nearest
 
-func get_AI():
-	if has_node("AI"):
-		return get_node("AI")
-	else:
-		return null
-
-
 func get_nearest_foe_and_info():
 	var nearest = null
 	var distance = 999
@@ -342,60 +340,60 @@ func get_furthest_foe_and_info():
 	
 	#then we return the dictionary with the nearest and some useful data!
 	return n
-#
-#func get_actor_info(_actor):
-#	var pos = _actor.get_map_position()
-#	var path = scene.get_mstar().find_path_v(get_map_position(), _actor.get_map_position())
-#	
-#	#if nearest hasn't been set or the distance to THIS guy is lower than the current nearest
-#	if path.size() > distance:
-#		#this is the new nearest
-#		distance = path.size()
-#		furthest = foe
-#		n["path"] = path
-#		n["actor"] = nearest
-#		n["distance"] = distance - 1
+
+func get_actor_info(_actor):
+	var pos = _actor.get_map_position()
+	var path = scene.get_mstar().find_path_v(get_map_position(), _actor.get_map_position())
+	
+	#if nearest hasn't been set or the distance to THIS guy is lower than the current nearest
+	if path.size() > distance:
+		#this is the new nearest
+		distance = path.size()
+		furthest = foe
+		n["path"] = path
+		n["actor"] = nearest
+		n["distance"] = distance - 1
 
 func get_map_position():
 	return scene.get_terrain().world_to_map(get_pos())
 
 func get_foes():
 	
-	var _foes = []
+	var _f = []
 	
 	for actor in scene.get_actors():
 		if actor.group != group:
-			_foes.append(actor)
+			_f.append(actor)
 	
-	return _foes
+	return _f
 
-#func AI_move_towards_actor(_actor):
-#	#get the nearest enemy
-#	#var nearest = get_nearest_foe_and_info()
-#	#print("AI:", name, " just found ", nearest["actor"].name, " to be the nearest. Distance: ", nearest["distance"])
-#	
-#	#invert the path to it because we will be checking from backwards
-#	nearest["path"].invert()
-#	var movable = get_movable_panels()
-#	
-#	#loop through the path to the nearest foe
-#	for i in nearest["path"]:
-#		#if i can move to that panel, do so
-#		if can_move_to(movable, i):
-#			find_path_to(i)
+func AI_move_towards_actor(_actor):
+	#get the nearest enemy
+	#var nearest = get_nearest_foe_and_info()
+	#print("AI:", name, " just found ", nearest["actor"].name, " to be the nearest. Distance: ", nearest["distance"])
+	
+	#invert the path to it because we will be checking from backwards
+	nearest["path"].invert()
+	var movable = get_movable_panels()
+	
+	#loop through the path to the nearest foe
+	for i in nearest["path"]:
+		#if i can move to that panel, do so
+		if can_move_to(movable, i):
+			find_path_to(i)
 
-#func ai_act():
-#	var nearest = get_nearest_foe_and_info();
-#	
-#	isWaitingForNextStepAI = true
-#	
-#	if can_attack(get_targettable_panels(), nearest["actor"]):
-#		attack(nearest["actor"])
-#		nextStepTimerAI = 30
-#		return true
-#	else:
-#		nextStepTimerAI = 5
-#		return false
+func ai_act():
+	var nearest = get_nearest_foe_and_info();
+	
+	isWaitingForNextStepAI = true
+	
+	if can_attack(get_targettable_panels(), nearest["actor"]):
+		attack(nearest["actor"])
+		nextStepTimerAI = 30
+		return true
+	else:
+		nextStepTimerAI = 5
+		return false
 
 func attack(target):
 	var dam = preload("res://assets/prefabs/damage_popup.prefab.tscn").instance()
@@ -437,16 +435,16 @@ func can_attack(targettablePanels, target):
 	#if the path exists (> 0) and its size and equals or is lower than move (<=), vòila
 	#return path.size() > 0 && path.size() <= move
 
-#func perform_animation(anim):
-#	
-#	var _anim
-#	
-#	if anim == "hit" && hitAnimation:
-#		_anim = hitAnimation
-#	
-#	if _anim:
-#		set_texture(_anim)
-#		performingAnimation = true
+func perform_animation(anim):
+	
+	var _anim
+	
+	if anim == "hit" && hitAnimation:
+		_anim = hitAnimation
+	
+	if _anim:
+		set_texture(_anim)
+		performingAnimation = true
 
 func block_enemy_cells(enable):
 	if enable:

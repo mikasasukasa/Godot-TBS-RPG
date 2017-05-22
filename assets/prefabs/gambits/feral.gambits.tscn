@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://assets/scripts/gambits/gambit.gd" type="Script" id=1]
+[ext_resource path="res://assets/scripts/gambits/gb_effect_chase_enemy.gd" type="Script" id=2]
+
+[node name="gambits FERAL" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="EFFECT -> chase nearest" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+target = "nearest"
+
+
