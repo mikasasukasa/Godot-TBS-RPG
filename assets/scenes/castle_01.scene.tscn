@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://assets/scripts/scene.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/grasslands.tileset.tres" type="TileSet" id=2]
@@ -15,21 +15,6 @@
 [ext_resource path="res://assets/scripts/cutscene/start_dialogue.gd" type="Script" id=13]
 [ext_resource path="res://assets/scripts/cutscene/teleport_actor.gd" type="Script" id=14]
 [ext_resource path="res://assets/scripts/cutscene/start_battle.gd" type="Script" id=15]
-
-[sub_resource type="GDScript" id=1]
-
-script/source = "extends TileMap
-
-# class member variables go here, for example:
-# var a = 2
-# var b = \"textvar\"
-
-func _ready():
-	set_process_input(true)
-
-func _input(ev):
-	if ev.is_action_pressed(\"ui_focus_next\"):
-		set_hidden(!is_hidden())"
 
 [node name="scene" type="Node"]
 
@@ -124,7 +109,6 @@ collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
 tile_data = IntArray( 65542, 0, 65543, 0, 65544, 0, 65545, 0, 65546, 0, 131077, 0, 131083, 0, 196608, 0, 196609, 0, 196610, 0, 196611, 0, 196612, 0, 196620, 0, 196621, 0, 196622, 0, 196623, 0, 196624, 0, 196625, 0, 262144, 0, 262161, 0, 327680, 0, 327697, 0, 393216, 0, 393233, 0, 458752, 0, 458753, 0, 458754, 0, 458755, 0, 458756, 0, 458764, 0, 458765, 0, 458766, 0, 458767, 0, 458768, 0, 458769, 0, 524293, 0, 524299, 0, 589830, 0, 589831, 0, 589833, 0, 589834, 0, 655367, 0, 655369, 0, 720903, 0, 720904, 0, 720905, 0 )
-script/script = SubResource( 1 )
 
 [node name="objects" type="TileMap" parent="."]
 

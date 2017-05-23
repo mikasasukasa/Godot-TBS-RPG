@@ -24,15 +24,15 @@ func _ready():
 	#create the group managers, marking 0 as the player (non-AI)
 	initialize_group_managers()
 	
-	#set the first turn
-	set_turn(GROUP_PLAYER)
-	
 	#fix actors positions and add them to their group managers
 	for _actor in scene.get_actors():
-		groupManagers[_actor.group].actors.append(_actor)
+		#groupManagers[_actor.group].actors.append(_actor)
 		fix_position(_actor)
 	
 	fix_position(get_cursor())
+	
+	#set the first turn
+	set_turn(GROUP_PLAYER)
 
 func start():
 	get_node("userInterface/BBBB/turnPanel").set_hidden(false)
@@ -72,16 +72,18 @@ func get_turn_color(_turn):
 	elif _turn == 2:
 		return Color(1.0, 0.25, 0.25, 1.0)
 
+func blerp(_value, _min, _max):
+	var v = _value
+	
+	if v > _max:
+		v = _min
+	elif v < _min:
+		v = _max
+	
+	return v 
+
 func end_turn():
-	var next = turn + 1
-	
-	if next < 2:
-		if groupManagers[next].actors.size() == 0:
-			next += 1
-	else:
-		next = 0
-	
-	set_turn(next)
+	set_turn(blerp(turn + 1, 0, 2))
 
 #func _input(ev):
 	#print("SD")
@@ -196,7 +198,7 @@ func initialize_group_managers():
 		var gm = GroupManager.instance()
 		gm.manager = self
 		gm.index = i
-		gm.isAI = (i != 0)
+		gm.isAI = (i != GROUP_PLAYER)
 		
 		get_node("groupManagers").add_child(gm)
 		groupManagers.append(gm)

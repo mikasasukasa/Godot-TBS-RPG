@@ -15,9 +15,9 @@ func _ready():
 	var source = terrain.world_to_map(actor.get_pos())
 	var actors = manager.scene.get_actors()
 	
-	for a in actors:
-		if a.group != actor.group:
-			manager.get_scene().get_mstar().forbidv(terrain.world_to_map(a.get_pos()))
+#	for a in actors:
+#		if a.group != actor.group:
+#			manager.get_scene().get_mstar().forbidv(terrain.world_to_map(a.get_pos()))
 	
 #	for x in range(max(1, source.x - actor.move), source.x + actor.move + 1):
 #		for y in range(max(1, source.y - actor.move), source.y + actor.move + 1):
@@ -42,15 +42,15 @@ func _ready():
 	for m in actor.get_movable_panels():
 		add_marker_at(m)
 	
-	for m in get_children():
-		for a in actors:
-			if a != actor:
-				if terrain.world_to_map(m.get_pos()) == terrain.world_to_map(a.get_pos()):
-					m.queue_free()
-	
-	for a in actors:
-		if a.group != actor.group:
-			manager.scene.get_mstar().freecv(terrain.world_to_map(a.get_pos()))
+#	for m in get_children():
+#		for a in actors:
+#			if a != actor:
+#				if terrain.world_to_map(m.get_pos()) == terrain.world_to_map(a.get_pos()):
+#					m.queue_free()
+#	
+#	for a in actors:
+#		if a.group != actor.group:
+#			manager.scene.get_mstar().freecv(terrain.world_to_map(a.get_pos()))
 	
 	manager.get_cursor().activate(true)
 	set_process_input(true)

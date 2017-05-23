@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://assets/scripts/gambits/gambit_manager.gd" type="Script" id=1]
+[ext_resource path="res://assets/scripts/gambits/move_randomly.gb_effect.gd" type="Script" id=2]
+
+[node name="gambits MOVE_RANDOMLY" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="EFFECT -> move randomly" type="Node" parent="."]
+
+script/script = ExtResource( 2 )
+
+

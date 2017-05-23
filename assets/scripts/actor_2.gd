@@ -20,6 +20,10 @@ const speed = 0.5
 
 var AI = null
 
+
+
+signal has_finished_moving
+
 #var nearest = {}
 var myManagerAI = null
 var waitAI = 30
@@ -60,7 +64,21 @@ func init_gambit():
 func should_move():
 	return path.size() > 0
 
+func get_angle():
+	var rad = get_pos().angle_to_point(get_global_mouse_pos())
+	var ang = rad2deg(rad) + 180.0
+	return ang
+
 func _process(delta):
+	
+	#var ang = 
+	#get_node("degrees").set_text(str(rad2deg(get_pos().angle_to_point(get_global_mouse_pos())) + 180.0))
+	#print(ang)
+	
+	#  0 -  90 = RIGHT
+	# 90 - 180 = UP
+	#180 - 270 = LEFT
+	#270 - 360 = DOWN
 	
 #	if performingAnimation:
 #		if animIndex < 3.0 - 0.2:
@@ -92,8 +110,11 @@ func _process(delta):
 			
 			path.pop_front()
 			
-			if isAI && path.size() == 0:
-				ai_wait_and_step(15)
+			if path.size() == 0:
+				emit_signal("has_finished_moving")
+			
+#			if isAI && path.size() == 0:
+#				ai_wait_and_step(15)
 		else:
 			handle_animation()
 			set_frame(animAngle * 4 + floor(animIndex))
@@ -205,41 +226,36 @@ func get_targettable_panels():
 #THIS WILL RETURN THE PANELS (VECTOR2'S) THIS ACTOR CAN MOVE TO!
 func get_movable_panels():
 	#its position in the map
-	var source = get_map_position()#scene.get_terrain().world_to_map(get_pos())
-	var actors = scene.get_actors()
-	var actorsPos = []
+	var source = get_map_position()
+	var forbidden = []
 	var movable = []
 	
+	block_enemy_cells(true)
+	
 	#first of all, let's forbid enemy cells (allies' stay free as they can move through them)
-	for actor in actors:
-		#if self, ignore (since an unit can move to its own panel)
-		if actor == self:
-			continue
-		
+	for current in scene.get_actors():
 		#let's keep track of actors positions to use later!
-		var ap = actor.get_map_position()#scene.get_terrain().world_to_map(actor.get_pos())
-		actorsPos.append(ap)
+		var ap = current.get_map_position()
+		forbidden.append(ap)
 		
 		#forbid actor's position if it's from another team
-		if actor.get_group() != group:
-			scene.get_mstar().forbidv(ap)
+		#if actor.group != group:
+		#	scene.get_mstar().forbidv(ap)
 	
-	for x in range(max(1, source.x - move), source.x + move + 1):
-		for y in range(max(1, source.y - move), source.y + move + 1):
+	for x in range(max(0, source.x - move), source.x + move + 1):
+		for y in range(max(0, source.y - move), source.y + move + 1):
 			#getting the position
 			var pos = Vector2(x, y)
 			
-			if pos == source:
-				continue
-			
 			#if the panel is occupied by an actor
-			var isOccupied = false
-			for p in actorsPos:
+			var occupied = false
+			
+			for p in forbidden:
 				if pos == p:
-					isOccupied = true
+					occupied = true
 					break
 			
-			if isOccupied:
+			if occupied:
 				continue
 			
 			#if it's not close enough
@@ -256,9 +272,10 @@ func get_movable_panels():
 			movable.append(pos)
 	
 	#free the stuff we forbid before
-	for ap in actorsPos:
-		scene.get_mstar().freecv(ap)
+	#for ap in actorsPos:
+	#	scene.get_mstar().freecv(ap)
 	
+	block_enemy_cells(false)
 	return movable
 
 func get_move():
@@ -448,25 +465,37 @@ func can_attack(targettablePanels, target):
 #		set_texture(_anim)
 #		performingAnimation = true
 
+#func block_enemy_cells(enable):
+#	if enable:
+#		for _actor in scene.get_actors():
+#			#forbid actor's position if it's from another team
+#			if _actor.group != group:
+#				var p = _actor.get_map_position()
+#				scene.get_mstar().forbidv(p)
+#				
+#				#var m = scene.get_mstar()
+#				#print(m.astar.get_point_pos(m.flatten(p.x, p.y)), " has been FORBIDDEN!")
+#	else:
+#		for _actor in scene.get_actors():
+#			#forbid actor's position if it's from another team
+#			if _actor.group != group:
+#				scene.get_mstar().freecv(_actor.get_map_position())
+
 func block_enemy_cells(enable):
 	if enable:
-		for _actor in scene.get_actors():
-			#forbid actor's position if it's from another team
-			if _actor.get_group() != group:
-				var p = _actor.get_map_position()
-				scene.get_mstar().forbidv(p)
-				
-				#var m = scene.get_mstar()
-				#print(m.astar.get_point_pos(m.flatten(p.x, p.y)), " has been FORBIDDEN!")
+		#forbid actor's position if it's from another team
+		for current in scene.get_actors():
+			if current.group != group:
+				scene.get_mstar().forbidv(current.get_map_position())
 	else:
+		#free actor's position if it's from another team
 		for _actor in scene.get_actors():
-			#forbid actor's position if it's from another team
-			if _actor.get_group() != group:
+			if _actor.group != group:
 				scene.get_mstar().freecv(_actor.get_map_position())
 
 func find_path_to(position):
 	block_enemy_cells(true)
-	var _path = scene.get_mstar().find_path_v(scene.get_terrain().world_to_map(get_pos()), position)
+	var _path = scene.get_mstar().find_path_v(get_map_position(), position)
 	block_enemy_cells(false)
 
 	for p in _path:

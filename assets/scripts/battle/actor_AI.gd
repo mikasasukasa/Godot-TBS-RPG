@@ -1,28 +1,31 @@
 extends Node
 
-#actor that owns me and that I will send orders to!
-var manager
+var manager #its group manager
+var gambit = null
 var delay
-var owner
+var owner #actor that owns me and that I will send orders to
+var timer
 
-var timer = -1
+func rnd(from, to):
+	return floor(rand_range(from, to))
 
+#here the AI will tell its actor what to do this turn!
 func start():
+	randomize()
+	#just print some info
 	Console.show(Console.AI, owner.name + "'s AI is going to start its play.")
 	
-	#manager.work()
+	#load the thing
+	gambit_load()
 	
-#	delay = Timer.new()
-#	delay.set_wait_time(1.0)
-#	delay.start()
-#	
-#	manager.add_child(delay)
-#	delay.connect("timeout", self, "on_delay_timeout")
+	#let the gambitManager do whatever it wants to the actor!
+	gambit.retrieve_order()
 	
+	#wait for it to deal with its actor
+	yield(gambit, "has_finished")
 	
-	timer = 45
-	set_process(true)
-	#end()
+	#end its turn
+	end()
 
 func _process(dt):
 	if timer > 0:
@@ -31,7 +34,7 @@ func _process(dt):
 		end()
 
 func end():
-	print("WOOOORK BITCH")
+	set_process(false)
 	manager.work()
 
 func get_foes():
@@ -44,7 +47,21 @@ func get_foes():
 	
 	return _foes
 
-
+func gambit_load():
+	if gambit == null:
+		var fname = "res://assets/prefabs/gambits/" + owner._gambit + ".gb_manager.tscn"
+		var file = File.new()
+		var f
+		
+		if file.file_exists(fname):
+			f = fname
+		else:
+			f = "res://assets/prefabs/gambits/move_randomly.gb_manager.tscn"
+			
+		var g = load(f).instance()
+		add_child(g)
+		g.AI = self
+		gambit = g
 
 
 func find_nearest_enemy():
@@ -85,3 +102,9 @@ func find_nearest_enemy():
 #			_foes.append(actor)
 #	
 #	return _foes
+
+
+
+func AI_move_randomly():
+	var movable = owner.get_movable_panels()
+	owner.find_path_to(movable[rnd(0, movable.size() - 1)])

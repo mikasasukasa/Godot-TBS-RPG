@@ -2,11 +2,17 @@
 var width    = 0
 var height   = 0
 var astar
+var map = []
+
+const FREE = 0
+const FORBIDDEN = 1
 
 func _init(_width, _height):
 	#set properties
 	width = _width
 	height = _height
+	
+	map.resize(width * height)
 	
 	#create the AStar
 	astar = AStar.new()
@@ -22,6 +28,8 @@ func _init(_width, _height):
 			#get current point and its position
 			var current = flatten(x, y)
 			var cpos = astar.get_point_pos(current)
+			
+			map[flatten(x, y)] = FREE
 			
 			#get neighbours
 			var u = cpos + Vector3(0, -1, 0)
@@ -50,6 +58,7 @@ func block_based_on_tilemap(tilemap):
 		for y in range(height):
 			if tilemap.get_cell(x, y) >= 0:
 				#print(Vector2(x, y), " is forbidden!")
+				#set_point_weight_scale 
 				forbid(x, y)
 
 func get_size():
@@ -64,6 +73,7 @@ func forbid(_x, _y):
 	disconnect_with_neighbour_at(current, Vector2(-1,  0))
 	disconnect_with_neighbour_at(current, Vector2( 0,  1))
 	disconnect_with_neighbour_at(current, Vector2( 0, -1))
+	map[current] = FORBIDDEN
 
 func freec(_x, _y):
 	var current = flatten(_x, _y)#this will do x * width + y to return the id
@@ -71,6 +81,7 @@ func freec(_x, _y):
 	connect_with_neighbour_at(current, Vector2(-1,  0))
 	connect_with_neighbour_at(current, Vector2( 0,  1))
 	connect_with_neighbour_at(current, Vector2( 0, -1))
+	map[current] = FREE
 
 func freecv(_pos):
 	freec(_pos.x, _pos.y)
@@ -89,7 +100,7 @@ func connect_with_neighbour_at(point_id, offset):
 	var p = cpos + Vector3(offset.x, offset.y, 0)
 	
 	#connect points
-	if point_within(p.x, p.y) && !astar.are_points_connected( point_id, flatten(p.x, p.y) ):
+	if point_within(p.x, p.y) && map[flatten(p.x, p.y)] == FREE && !astar.are_points_connected( point_id, flatten(p.x, p.y)):
 		astar.connect_points(point_id, flatten(p.x, p.y))
 
 func disconnect_with_neighbour_at(point_id, offset):
