@@ -5,4 +5,4 @@ Turn-based strategy RPG made using Godot 2.1.3. Inspiration comes from games lik
 
 ![alt text](https://image.prntscr.com/image/e4da2a6edf95480788af61c3b34d37d0.png)
 
-You can play it here: https://indiemaatheus.github.io/
+You can play it here: https://mikasasukasa.github.io/
